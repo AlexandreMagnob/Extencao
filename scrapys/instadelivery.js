@@ -81,100 +81,99 @@ class scrapyInstaDelivery {
     cleanedText = cleanedText.replace(/\([^)]*\)/g, '');
     return [cleanedText.trim(), complementType.trim()];
 }
+
+
 async processComplements(productModal) {
   var complementsDict = [];
   var complementExpandables = productModal.querySelectorAll(".col-md-12.complement, .col-md-10.col-sm-10");
 
   for await (const complementExpandable of complementExpandables) {
+      if (complementExpandable.classList.contains('col-md-10')) {
+          var complementElements = complementExpandable.querySelectorAll('.item-desc');
+          var optionsComplement = [];
 
-      if(complementExpandable.classList.contains('col-md-10')){
-        complementElements = complementExpandable.querySelectorAll('.item-desc');
-      
-        var optionsComplement = [];
+          for await (const complementElement of complementElements) {
+              var complementTitleElement = complementElement.querySelector('i');
+              var complementName = complementTitleElement ? complementTitleElement.nextSibling.textContent.trim() : '';
 
-        for await (const complementElement of complementElements) {
-          var complementNameElement = complementExpandable.querySelector('i');
-          var complementName = complementTitleElement ? complementTitleElement.nextSibling.textContent.trim() : '';
-          
-          // Captura a quantidade de opções e se a opção é obrigatória ou não
-          var [Required, minQtd, maxQtd] = await this.getComplementQuantityRequired(complementType);
+              // Captura a quantidade de opções e se a opção é obrigatória ou não
+              var [Required, minQtd, maxQtd] = await this.getComplementQuantityRequired(complementType);
 
-          // Verifica se tem repetição e o tipo 'mais de uma opção' ou não.
-          var typeComplement = await this.getComplementType(complementExpandable, maxQtd);
+              // Verifica se tem repetição e o tipo 'mais de uma opção' ou não.
+              var typeComplement = await this.getComplementType(complementExpandable, maxQtd);
 
-          // Pegar nome de cada opção do complemento da iteração
-          var optionsElement = complementExpandable.querySelectorAll('.form-check');
-          for await (const optionElement of optionsElement) {
-              var optionTitleElement = optionElement.querySelector('.item-complement, .complement-name');
-              var optionPriceElement = optionElement.querySelector('.sub-item-price');
+              // Pegar nome de cada opção do complemento da iteração
+              var optionsElement = complementExpandable.querySelectorAll('.form-check');
+              for await (const optionElement of optionsElement) {
+                  var optionTitleElement = optionElement.querySelector('.item-complement, .complement-name');
+                  var optionPriceElement = optionElement.querySelector('.sub-item-price');
 
-              var optionTitle = optionTitleElement ? optionTitleElement.textContent.trim() : "";
-              var optionPriceText = optionPriceElement ? optionPriceElement.textContent : "0";
-              var optionPrice = optionPriceText.replace(/[^\d,.]/g, '').replace('.', ',');
-              var optionDescription = "";
-            }
+                  var optionTitle = optionTitleElement ? optionTitleElement.textContent.trim() : "";
+                  var optionPriceText = optionPriceElement ? optionPriceElement.textContent : "0";
+                  var optionPrice = optionPriceText.replace(/[^\d,.]/g, '').replace('.', ',');
+                  var optionDescription = "";
 
-              optionsComplement.push({
-                  optionTitle: optionTitle,
-                  optionPrice: optionPrice,
-                  optionDescription: optionDescription
-              });
+                  optionsComplement.push({
+                      optionTitle: optionTitle,
+                      optionPrice: optionPrice,
+                      optionDescription: optionDescription
+                  });
+              }
           }
       }
-      if(complementExpandable.classList.contains('col-md-12')){
-        var complementElements = complementExpandable.querySelectorAll('.complement-font');
-        var optionsComplement = [];
+      if (complementExpandable.classList.contains('col-md-12')) {
+          var complementElements = complementExpandable.querySelectorAll('.complement-font');
+          var optionsComplement = [];
 
-        // Pegar o nome de cada complemento
-        for await (const complementElement of complementElements) {
-            var complementNameElement = complementElement.textContent;
-            // Separa o nome do complemento do seu tipo e.g: (Obrigatório) 0/2
-            var [complementName, complementType] = await this.cleanUpText(complementNameElement);
+          // Pegar o nome de cada complemento
+          for await (const complementElement of complementElements) {
+              var complementNameElement = complementElement.textContent;
+              // Separa o nome do complemento do seu tipo e.g: (Obrigatório) 0/2
+              var [complementName, complementType] = await this.cleanUpText(complementNameElement);
 
-            // Captura a quantidade de opções e se a opção é obrigatória ou não
-            var [Required, minQtd, maxQtd] = await this.getComplementQuantityRequired(complementType);
+              // Captura a quantidade de opções e se a opção é obrigatória ou não
+              var [Required, minQtd, maxQtd] = await this.getComplementQuantityRequired(complementType);
 
-            // Verifica se tem repetição e o tipo 'mais de uma opção' ou não.
-            var typeComplement = await this.getComplementType(complementExpandable, maxQtd);
+              // Verifica se tem repetição e o tipo 'mais de uma opção' ou não.
+              var typeComplement = await this.getComplementType(complementExpandable, maxQtd);
 
-            // Pegar nome de cada opção do complemento da iteração
-            var optionsElement = complementExpandable.querySelectorAll('.form-check');
-            for await (const optionElement of optionsElement) {
-                var optionTitleElement = optionElement.querySelector('.item-complement, .complement-name');
-                var optionPriceElement = optionElement.querySelector('.sub-item-price');
+              // Pegar nome de cada opção do complemento da iteração
+              var optionsElement = complementExpandable.querySelectorAll('.form-check');
+              for await (const optionElement of optionsElement) {
+                  var optionTitleElement = optionElement.querySelector('.item-complement, .complement-name');
+                  var optionPriceElement = optionElement.querySelector('.sub-item-price');
 
-                var optionTitle = optionTitleElement ? optionTitleElement.textContent.trim() : "";
-                var optionPriceText = optionPriceElement ? optionPriceElement.textContent : "0";
-                var optionPrice = optionPriceText.replace(/[^\d,.]/g, '').replace('.', ',');
-                var optionDescription = "";
+                  var optionTitle = optionTitleElement ? optionTitleElement.textContent.trim() : "";
+                  var optionPriceText = optionPriceElement ? optionPriceElement.textContent : "0";
+                  var optionPrice = optionPriceText.replace(/[^\d,.]/g, '').replace('.', ',');
+                  var optionDescription = "";
+
+                  optionsComplement.push({
+                      optionTitle: optionTitle,
+                      optionPrice: optionPrice,
+                      optionDescription: optionDescription
+                  });
               }
 
-                optionsComplement.push({
-                    optionTitle: optionTitle,
-                    optionPrice: optionPrice,
-                    optionDescription: optionDescription
-                });
-            }
+              complementsDict.push({
+                  nameComplement: complementName,
+                  typeComplement: typeComplement,
+                  minQtd: minQtd,
+                  maxQtd: maxQtd,
+                  options: optionsComplement
+              });
 
-            complementsDict.push({
-                nameComplement: complementName,
-                typeComplement: typeComplement,
-                minQtd: minQtd,
-                maxQtd: maxQtd,
-                options: optionsComplement
-            });
-
-            console.log("- - - - - - - - - - - - - - - - - ")
-            console.log("NOME DO COMPLEMENTO: ",complementName)
-            console.log("TIPO DO COMPLEMENTO: ",typeComplement)
-            console.log("QUANTIDADE MIN: ",minQtd)
-            console.log("QUANTIDADE MAX: ",maxQtd)
-            console.log("OPÇOES: ",optionsComplement)
-            console.log("- - - - - - - - - - - - - - - - - ")
-            console.log("                                  ")
-        }
-        
-    }
+              console.log("- - - - - - - - - - - - - - - - - ")
+              console.log("NOME DO COMPLEMENTO: ", complementName)
+              console.log("TIPO DO COMPLEMENTO: ", typeComplement)
+              console.log("QUANTIDADE MIN: ", minQtd)
+              console.log("QUANTIDADE MAX: ", maxQtd)
+              console.log("OPÇOES: ", optionsComplement)
+              console.log("- - - - - - - - - - - - - - - - - ")
+              console.log("                                  ")
+          }
+      }
+  }
   return [complementsDict, Required, maxQtd];
 }
 
@@ -242,7 +241,7 @@ async processComplements(productModal) {
         await this.sleep(500);
         let categoryDivs = document.querySelectorAll('.card.mb-4');
         let categoryDiv = categoryDivs[categoryIndex];
-        let categoryNameElement = categoryDiv.querySelector('.group-name');
+        let categoryNameElement = categoryDiv.querySelector('.group-image-name');
         let categoryName = categoryNameElement ? categoryNameElement.textContent : "";
 
         let productCards = categoryDiv.querySelectorAll('.item-container.w-100 .col-md-12.item');
@@ -268,7 +267,7 @@ async processComplements(productModal) {
 
             await this.sleep(1500)
             let productModal = document.querySelector('.modal-content');
-            let titleElement = productModal.querySelector('.itemName');
+            let titleElement = productModal.querySelector('.modal-title');
             console.log(titleElement)
             let imgElement = productModal.querySelector('img[alt="Item image"]')
             let descricaoElement = productModal.querySelector('.item-description')

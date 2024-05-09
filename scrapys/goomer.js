@@ -109,13 +109,13 @@ class ScrapyGoomer {
             let productDescricao = descricaoElement ? descricaoElement.textContent : "";
     
             let complementsDict = []
-            let complementExpandables = document.querySelectorAll('[data-test="optional-items-list"]');
+            let complementExpandables = document.querySelectorAll('.sc-15b5d6c-0 ');
             for await (const complementExpandable of complementExpandables) {
               let complementElements = complementExpandable.querySelectorAll('.sc-470djk-0')
               let optionsComplement = [];
               // Pegar o nome de cada complemento
               for await (const complementElement of complementElements) {
-                let complementNameElement = complementElement.querySelector('.title');
+                let complementNameElement = complementElement.querySelector('.sc-470djk-0');
                 let typeComplementElement = complementElement.querySelector('.tip');
                 let typeComplementText = typeComplementElement ? typeComplementElement.textContent : "";
                 let [typeComplement, minQtd, maxQtd] = await this.processTypeComplement(typeComplementText, complementExpandable);
