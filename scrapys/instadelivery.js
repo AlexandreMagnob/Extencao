@@ -61,10 +61,10 @@ class scrapyInstaDelivery {
         repetion = " sem repeticao"
       }
       if(Quantity>1){
-        type = "Mais de uma opcao " + repetion
+        type = "Mais de uma opcao" + repetion
       }
       else{
-        type = "Apenas uma opcao "
+        type = "Apenas uma opcao"
       }
       return type
     }
