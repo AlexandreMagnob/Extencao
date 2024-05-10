@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
       { urlPattern: /^https:\/\/.*\.ola\.click\/.*/, value: "OlaClick" },
       { urlPattern: /^https:\/\/instadelivery\.com\.br\/.*/, value: "InstaDelivery" },
       { urlPattern: /^https:\/\/www\.hubt\.com\.br\/.*/, value: "Hubt" },
-      { urlPattern: /^https:\/\/app\.jotaja\.com\/.*/, value: "Jotaja" },
+      { urlPattern: /^https:\/\/app-core\.jotaja\.com\/.*/, value: "Jotaja" },
       { urlPattern: /^https:\/\/.*\.yooga\.app\/.*/, value: "Yooga" },
       { urlPattern: /^https:\/\/.*\.cardapiodigital\.io\/.*/, value: "CardapioDigital" },
       { urlPattern: /^https:\/\/.*\.saipos\.com\/.*/, value: "Saipos" }
