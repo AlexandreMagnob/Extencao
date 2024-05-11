@@ -30,7 +30,8 @@
         "https://*.yooga.app/*",
         "https://*.cardapiodigital.io/*",
         "https://*.saipos.com/*",
-        "https://deliveryapp.neemo.com.br/*"
+        "https://deliveryapp.neemo.com.br/*",
+        "https://www.vucafood.com.br/*"
       ],
       "js": [
         "papaparse.min.js",
@@ -44,6 +45,7 @@
         "scrapys/yooga.js",
         "scrapys/cardapiodigital.js",
         "scrapys/saipos.js",
+        "scrapys/vucafood.js",
         "scrapys/neemo.js",
         "handlerScrapy.js",
         "sheet_generation.js"
