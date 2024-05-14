@@ -244,7 +244,7 @@ async processComplements(productModal) {
         let categoryNameElement = categoryDiv.querySelector('.group-image-name');
         let categoryName = categoryNameElement ? categoryNameElement.textContent : "";
 
-        let productCards = categoryDiv.querySelectorAll('.item-container.w-100 .col-md-12.item');
+        let productCards = categoryDiv.querySelectorAll('.item-container.w-100 .col-md-12.item, .col-md-12 .nopadding .mb-4');
 
         console.log("TAMAHO PRODUTOS:", productCards.length);
         console.log("CATEGORIA", {categoryDiv, categoryName});
@@ -254,7 +254,7 @@ async processComplements(productModal) {
           await this.sleep(500)
           let categoryDivs = document.querySelectorAll('.card.mb-4')
           let categoryDiv = categoryDivs[categoryIndex];
-          let productCards = categoryDiv.querySelectorAll('.item-container.w-100 .col-md-12.item')
+          let productCards = categoryDiv.querySelectorAll('.item-container.w-100 .col-md-12.item, .col-md-12 .nopadding .mb-4')
           let productCard = productCards[productIndex];
 
           console.log({productIndex, productCard})
