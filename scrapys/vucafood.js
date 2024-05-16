@@ -58,7 +58,7 @@ class scrapyVucaFood {
     }
   }
 
-  async processTypeComplement(typeComplement, complementExpandable) {
+  async  processTypeComplement(typeComplement, complementExpandable) {
     const complement = typeComplement.trim();
     let repetition = await this.checkRepetition(complementExpandable);
     let type = "";
@@ -99,6 +99,29 @@ class scrapyVucaFood {
     return [type, minQtd, maxQtd];
   }
 
+  async getOptionsComplement (optionsContainer) {
+    let optionTitle = "";
+    let optionDescription = "";
+    let optionPriceText = "";
+    let optionPrice = "";
+
+    let optionsElement = optionsContainer.querySelectorAll('dd');
+
+      for await (const optionElement of optionsElement) {
+          console.log("ENTROUUU 2") 
+          let optionTitleElement = optionElement.querySelector('h1');
+          let optionPriceElement = optionElement.querySelector('h3'); 
+          let optionDescriptionElement = optionElement.querySelector('.chooser-info__description.text-grey-2.text-left.font-1.mb-1');
+
+           optionTitle = optionTitleElement ? optionTitleElement.textContent : "";
+           optionDescription = optionDescriptionElement ? optionDescriptionElement.textContent : "";
+           optionPriceText = optionPriceElement ? optionPriceElement.textContent : "0";
+           optionPrice = optionPriceText.replace(/[^\d,.]/g, '').replace('.', ',');
+
+           return [optionTitle,optionDescription,optionPrice];
+      }
+  }
+
   async clickProductCards() {
     console.log("executando..");
     await this.sleep(1000);
@@ -137,14 +160,10 @@ class scrapyVucaFood {
       
             for await (const complementExpandable of complementExpandables) {
 
-                let optionsContainers = complementExpandable.querySelectorAll('dl[style="display:block"]')
-
                 let complementElements = complementExpandable.querySelectorAll('.produto-opcoes-secao.js-grupos');
                 console.log(complementElements)
 
-                for await (const optionContainer of optionsContainers) {
-
-
+                
                     // Pegar o nome de cada complemento
                     for await (const complementElement of complementElements) {
 
@@ -159,17 +178,13 @@ class scrapyVucaFood {
                         // Pegar nome de cada opção do complemento da iteração
                         let optionsComplement = [];
 
-                        let optionsElement = optionContainer.querySelectorAll('dd');
+                        let optionsContainers = complementExpandable.querySelectorAll('dl[style="display:block"]')
 
-                        for await (const optionElement of optionsElement) {
-                            let optionTitleElement = optionElement.querySelector('h1');
-                            let optionPriceElement = optionElement.querySelector('h3');
-                            let optionDescriptionElement = optionElement.querySelector('.chooser-info__description.text-grey-2.text-left.font-1.mb-1');
 
-                            let optionTitle = optionTitleElement ? optionTitleElement.textContent : "";
-                            let optionDescription = optionDescriptionElement ? optionDescriptionElement.textContent : "";
-                            let optionPriceText = optionPriceElement ? optionPriceElement.textContent : "0";
-                            let optionPrice = optionPriceText.replace(/[^\d,.]/g, '').replace('.', ',');
+
+                        for await (const optionsContainer of optionsContainers) {
+                          let [optionTitle,optionDescription,optionPrice] = await this.getOptionsComplement(optionsContainer)
+                          
 
 
                             optionsComplement.push({
@@ -199,7 +214,7 @@ class scrapyVucaFood {
                         console.log("- - - - - - - - - - - - - - - - - ")
                         console.log("                                  ")
                     }
-                }
+                
             }
 
             productData.push({
@@ -209,13 +224,13 @@ class scrapyVucaFood {
                 descricao: productDescricao,
                 complementsDict: complementsDict
             });
-            console.log("- - - - - - - - - - - - - - - - - ")
-            console.log("NOME PRODUTO: ", productTitle)
-            console.log("PREÇO PRODUTO: ", productPrice)
-            console.log("IMAGEM: ", imgSrc)
-            console.log("DESCRIÇAO: ", productDescricao)
-            console.log("- - - - - - - - - - - - - - - - - ")
-            console.log("                                  ")
+            // console.log("- - - - - - - - - - - - - - - - - ")
+            // console.log("NOME PRODUTO: ", productTitle)
+            // console.log("PREÇO PRODUTO: ", productPrice)
+            // console.log("IMAGEM: ", imgSrc)
+            // console.log("DESCRIÇAO: ", productDescricao)
+            // console.log("- - - - - - - - - - - - - - - - - ")
+            // console.log("                                  ")
             await this.backPage();
             await this.sleep(1000)
 
@@ -232,7 +247,7 @@ class scrapyVucaFood {
     await this.sleep(1000);
     let back = document.querySelector('.fancybox-button.fancybox-close-small');
     if (back) {
-      console.log("Voltou");
+      // console.log("Voltou");
       back.click();
     }
   }
