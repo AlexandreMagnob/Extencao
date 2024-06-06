@@ -119,13 +119,14 @@ class scrapySaipos {
               for await (const optionElement of optionsElement) {
                 let optionTitleElement = optionElement.querySelector('span[data-qa="choice-item-description"]');
                 let optionPriceElement = optionElement.querySelector('div[data-qa="item-price"]');
+                let optionDescriptionElement = optionElement.querySelector('p')
                 //let optionQtdElement = optionElement.querySelector('span.text-grey-3');
   
                 let optionTitle = optionTitleElement ? optionTitleElement.textContent : "";
                 let optionPriceText = optionPriceElement ? optionPriceElement.textContent : "0";
                 let optionPrice = optionPriceText.replace(/[^\d,.]/g, '').replace('.', ',');
                 //let optionQtd = optionQtdElement ? optionQtdElement.textContent : "";
-                let optionDescription = "";
+                let optionDescription = optionDescriptionElement ? optionTitleElement.textContent : "";
   
                 optionsComplement.push({
                   optionTitle: optionTitle,

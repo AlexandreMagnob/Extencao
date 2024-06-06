@@ -66,7 +66,7 @@ class scrapyHubt {
 
             let productModal = document.querySelector('.sc-fzplWN.hRBsWH.sc-fzpjYC');
             let complementElement = document.querySelector('.ProductItemDialog__PriceList-j5dr03-5.hLOrDr');
-            let notComplementElement = complementElement.querySelector('.price-Único');
+            let notComplementElement = document.querySelector('.price-Único');
             let titleElement = productModal.querySelector('.ProductItemDialog__DialogProductTitle-j5dr03-0');
             let imgElement = document.querySelector('.DialogHeaderImage-sc-127fjht-0.ProductItemDialog__ProductHeaderImage-j5dr03-19');
             let imageUrl = imgElement ? window.getComputedStyle(imgElement).backgroundImage.replace(/^url\(["'](.+)["']\)$/, '$1') : null;
@@ -82,7 +82,7 @@ class scrapyHubt {
             
             let priceElement = "";
 
-            if(notComplement == 'Único'){
+            if(complementElement){
             priceElement = productModal.querySelector('.price-value');
             }
 
