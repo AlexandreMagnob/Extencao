@@ -141,17 +141,11 @@ class scrapyVucaFood {
             let complementExpandables = document.querySelectorAll('.form.js-produto-opcoes');
             
             for await (const complementExpandable of complementExpandables) {
-
-              let optionsContainers = complementExpandable.querySelectorAll('dl[style="display:block"]')
               
               
               let complementElements = complementExpandable.querySelectorAll('.produto-opcoes-secao.js-grupos');
               console.log(complementElements)
-              
-              for await (const optionContainer of optionsContainers){
-             
-              
-                  
+            
               // Pegar o nome de cada complemento
               for await (const complementElement of complementElements) {
                 
@@ -169,7 +163,7 @@ class scrapyVucaFood {
 
                 
 
-                let optionsElement = optionContainer.querySelectorAll('dd');
+                let optionsElement = complementExpandable.querySelectorAll('dd');
                 
                 for await (const optionElement of optionsElement) {
                   let optionTitleElement = optionElement.querySelector('h1');
@@ -211,7 +205,7 @@ class scrapyVucaFood {
                 console.log("- - - - - - - - - - - - - - - - - ")
                 console.log("                                  ")
               }
-            }
+            
           }
             
             productData.push({

@@ -301,7 +301,7 @@ async processComplements(productModal) {
   async backPage() {
     console.log("Voltou!")
     await this.sleep(1000);
-    let back = document.querySelector('.update-button');
+    let back = document.querySelector('.modal-title-close, .update-button');
     if (back) {
       back.click()
   }

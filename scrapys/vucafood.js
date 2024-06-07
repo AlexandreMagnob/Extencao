@@ -178,7 +178,7 @@ class scrapyVucaFood {
                         // Pegar nome de cada opção do complemento da iteração
                         let optionsComplement = [];
 
-                        let optionsContainers = complementExpandable.querySelectorAll('dl[style="display:block"]')
+                        let optionsContainers = document.querySelectorAll('dl[style="display:block"]')
 
 
 
