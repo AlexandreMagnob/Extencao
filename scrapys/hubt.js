@@ -68,12 +68,12 @@ class scrapyHubt {
             let complementElement = document.querySelector('.ProductItemDialog__PriceList-j5dr03-5.hLOrDr');
             let notComplementElement = document.querySelector('.price-Único');
             let titleElement = productModal.querySelector('.ProductItemDialog__DialogProductTitle-j5dr03-0');
-            let imgElement = document.querySelector('.DialogHeaderImage-sc-127fjht-0.ProductItemDialog__ProductHeaderImage-j5dr03-19');
+            let imgElement = document.querySelector('.MultiImagesEditor__ProductHeaderImage-awskso-4');
             let imageUrl = imgElement ? window.getComputedStyle(imgElement).backgroundImage.replace(/^url\(["'](.+)["']\)$/, '$1') : null;
             let descricaoElement = productModal.querySelector('.ProductItemDialog__ProductDescription-j5dr03-2.bxZGzY');
             let productTitle = titleElement ? titleElement.textContent : "";
             let imgSrc = imageUrl ? imageUrl : "";
-            let productDescricao = descricaoElement ? descricaoElement.textContent : "";
+            let productDescricao = descricaoElement ? descricaoElement.innerHTML.replace(/<br\s*\/?>/gi, '\n') : "";
             let productPrice = "";
             let notComplement = "";
 
@@ -93,7 +93,7 @@ class scrapyHubt {
 
             let complementsDict = []
             
-            let complementExpandables = document.querySelectorAll('.ProductItemDialog__PriceList-j5dr03-5.hLOrDr');
+            let complementExpandables = document.querySelectorAll('.ProductItemDialog__PriceList-j5dr03-5');
 
             for await (const complementExpandable of complementExpandables) {
 
@@ -108,8 +108,11 @@ class scrapyHubt {
                 }
                 let [typeComplement, minQtd, maxQtd] = await this.processTypeComplement(typeComplementText, complementExpandable)
                 // Pegar nome de cada opção do complemento da iteração
-                let optionsElement = complementExpandable.querySelectorAll('.ProductItemDialog__PriceItem-j5dr03-6.cRxigD');
+                
+                let optionsElement = complementExpandable.querySelectorAll('.ProductItemDialog__PriceItem-j5dr03-6');
                 for await (const optionElement of optionsElement) {
+
+
                   let optionTitle = "";
                   let optionPrice = "";
                   let optionDescription = "";

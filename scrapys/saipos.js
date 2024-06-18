@@ -58,13 +58,13 @@ class scrapySaipos {
     console.log("executando..")
     await this.sleep(1000)
     let categoryDivs = document.querySelectorAll('.category-container');
-    console.log(categoryDivs)
     for await (const categoryIndex of [...Array(categoryDivs.length).keys()]) {
       await this.sleep(500)
       let categoryDivs = document.querySelectorAll('.category-container');
       let categoryDiv = categoryDivs[categoryIndex];
-      let categoryNameElement = categoryDiv.querySelector('h2.category-desc');
+      let categoryNameElement = categoryDiv.querySelector('[data-qa="category-desc"]');
       let categoryName = categoryNameElement ? categoryNameElement.textContent : "";
+      console.log(categoryName)
       let productCards = categoryDiv.querySelectorAll(".list_circle_detail");
   
       let productData = [];
@@ -87,7 +87,7 @@ class scrapySaipos {
           let productModal = document.querySelector('#main-content')
           let titleElement = productModal.querySelector('h5[data-qa="item-description"]');
           let imgElement = productModal.querySelectorAll('img[alt="Logo"]')[1];
-          let descricaoElement = productModal.querySelector('h5[data-qa="item-detail"');
+          let descricaoElement = productModal.querySelector('p[data-qa="item-detail"');
           let productTitle = titleElement ? titleElement.textContent : "";
           let imgSrc = imgElement ? imgElement.src : "";
           let productDescricao = descricaoElement ? descricaoElement.textContent : "";
@@ -165,9 +165,9 @@ class scrapySaipos {
           });
           console.log("- - - - - - - - - - - - - - - - - ")
           console.log("NOME PRODUTO: ", productTitle)
+          console.log("DESCRIÇAO: ", productDescricao)
           console.log("PREÇO PRODUTO: ", productPrice)
           console.log("IMAGEM: ", imgSrc)
-          // console.log("DESCRIÇAO: ", productDescricao)
           console.log("- - - - - - - - - - - - - - - - - ")
           console.log("                                  ")
           window.history.go(-1)

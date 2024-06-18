@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
       { urlPattern: /^https:\/\/.*\.menudino\.com\/.*/, value: "Dino" },
       { urlPattern: /^https:\/\/.*\.goomer\.app\/.*/, value: "Goomer" },
       { urlPattern: /^https:\/\/.*\.ola\.click\/.*/, value: "OlaClick" },
+      { urlPattern: /^https:\/\/.*\.olaclick\.net\/.*/, value: "OlaClick" },
       { urlPattern: /^https:\/\/instadelivery\.com\.br\/.*/, value: "InstaDelivery" },
       { urlPattern: /^https:\/\/www\.hubt\.com\.br\/.*/, value: "Hubt" },
       { urlPattern: /^https:\/\/www\.vucafood\.com\.br\/.*/, value: "VucaFood" },

@@ -45,7 +45,7 @@ class scrapyDino {
         } else if (typeOption.classList.contains('checkbox')) {
           minQtd = "0";
           maxQtd = "";
-          type = "Mais de uma opcao com repeticao";
+          type = "Mais de uma opcao sem repeticao";
           return [type, minQtd, maxQtd];
         }
       }
@@ -108,8 +108,6 @@ class scrapyDino {
         let categoryDiv = categoryDivs[categoryIndex];
         let productCards = categoryDiv.querySelectorAll('.product-container');
         let productCard = productCards[productIndex];
-        
-        console.log({productIndex, productCard})
 
         
         
@@ -126,18 +124,12 @@ class scrapyDino {
           console.log(titleElement)
           let imgElement = productModal.querySelector('#produtoModalImagePath');
           let descricaoElement = productModal.querySelector('#produtoModalDescricao')
-          let priceElement = productModal.querySelector('.show');
+          let priceElement = productModal.querySelector('#PrecoTotal');
           let productTitle = titleElement ? titleElement.textContent : "";
-          console.log(productTitle)
           let priceText = priceElement ? priceElement.textContent : "";
-          let productPrice = "0"
-          if (priceText.includes("a")) {
-            // Se for um intervalo, defina o preço como zero
-            productPrice = "0";
-          } else {
-            // Se for um preço único, extraia o valor normal
-            productPrice = this.extractSinglePrice(priceText);
-          }
+          let productPrice = priceText.replace(/[^\d,.]/g, '').replace('.', ',');
+
+
           let imgSrc = imgElement ? imgElement.src : "";
           let productDescricao = descricaoElement ? descricaoElement.textContent : "";
   
@@ -178,33 +170,43 @@ class scrapyDino {
                   optionPrice = optionPriceText.replace(/[^\d,.]/g, '').replace('.', ',')
 
                   
-                  console.log({optionPrice, optionTitle})
                   
                 } else if (optionElement && optionElement.classList.contains('pb') && optionElement.classList.contains('pt')) {
-                  // Encontrando a tag <b> dentro do elemento
-                  const bTag = optionElement.querySelector('b');
-                  if (bTag) {
-                      // Obtendo o preço do texto dentro da tag <b>
-                      const priceRegex = /R\$(\d+,\d{2})/;
-                      const priceMatch = bTag.textContent.match(priceRegex);
-                      optionPrice = priceMatch ? priceMatch[1] : "";
+                  const optionText = optionElement.textContent;
               
-                      // Obtendo o título (todo o texto que não está dentro da tag <b>)
-                      optionTitle = optionElement.textContent.replace(bTag.textContent, "").trim();
-                      console.log({optionPrice, optionTitle})
-                  }
+                  // Expressão regular para encontrar o preço no formato R$ xx,xx
+                  const priceRegex = /R\$\s*(\d+,\d{2})/;
+                  const priceMatch = optionText.match(priceRegex);
+                  optionPrice = priceMatch ? priceMatch[1] : "";
+              
+                  // Removendo o preço do texto para obter apenas o título
+                  optionTitle = optionText.replace(priceRegex, "").trim();
+              
+                  // Removendo parênteses do final do texto
+                  const parenthesesRegex = /\s*\(.*?\)$/;
+                  optionTitle = optionTitle.replace(parenthesesRegex, "").trim();
               }
+              
                 else if (optionElement.classList.contains('checkbox')) {
                   // Se a classe for 'checkbox', trata como um checkbox.
                   let optionLabelElement = optionElement.querySelector('label');
                   
                   if (optionLabelElement) {
                     let optionLabelContent = optionLabelElement.textContent.trim();
-                    optionTitle = optionLabelContent.split('+')[0].trim();
-                    let optionPriceText = optionLabelContent.split('+')[1];
-                    optionPrice = optionPriceText.replace(/[^\d,.]/g, '').replace('.', ',')
-
-                    console.log({optionPrice, optionTitle})
+                    let optionParts = optionLabelContent.split('+');
+                
+                    // Verifica se há uma parte do preço
+                    if (optionParts.length > 1) {
+                        optionTitle = optionParts[0].trim();
+                        let optionPriceText = optionParts[1];
+                        optionPrice = optionPriceText.replace(/[^\d,.]/g, '').replace('.', ',');
+                
+                        console.log({ optionPrice, optionTitle });
+                    } else {
+                        optionTitle = optionLabelContent;
+                        optionPrice = "0"; // ou atribua um valor padrão ou faça outro tratamento adequado
+                
+                    }
                   }
                 }
 
@@ -222,6 +224,14 @@ class scrapyDino {
                 maxQtd: maxQtd,
                 options: optionsComplement
               })
+              console.log("- - - - - - - - - - - - - - - - - ")
+              console.log("NOME DO COMPLEMENTO: ",complementName)
+              console.log("TIPO DO COMPLEMENT: ",typeComplement)
+              console.log("QUANTIDADE MIN: ",minQtd)
+              console.log("QUANTIDADE MAX: ",maxQtd)
+              console.log("OPÇOES: ",optionsComplement)
+              console.log("- - - - - - - - - - - - - - - - - ")
+              console.log("                                  ")
             }
           }
   
@@ -232,7 +242,13 @@ class scrapyDino {
             descricao: productDescricao,
             complementsDict: complementsDict
           });
-          console.log("Produto adicionado")
+          console.log("- - - - - - - - - - - - - - - - - ")
+          console.log("NOME PRODUTO: ", productTitle)
+          console.log("PREÇO PRODUTO: ", productPrice)
+          console.log("IMAGEM: ", imgSrc)
+          console.log("DESCRIÇAO: ", productDescricao)
+          console.log("- - - - - - - - - - - - - - - - - ")
+          console.log("                                  ")
           await this.backPage();
         }
       }
