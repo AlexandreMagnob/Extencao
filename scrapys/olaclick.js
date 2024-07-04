@@ -48,12 +48,12 @@ class ScrapyOlaClick {
             } else if (matchSelectUntil) {
             const maxItems = parseInt(matchSelectUntil[1], 10);
             if (maxItems === 1) {
-                type = "Apenas uma opcao ";
+                type = "Apenas uma opcao";
                 minQtd = requiredFlag;
                 maxQtd = maxItems;
                 console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
             } else {
-                type = "Mais de um opcao " + repetition;
+                type = "Mais de uma opcao " + repetition;
                 minQtd = 0;
                 maxQtd = maxItems;
                 console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
@@ -82,7 +82,7 @@ class ScrapyOlaClick {
                 console.log('minQtd:', minQtd, 'maxqtd', maxQtd);
               }
             }else if (matchSelectMinOption) {
-                type = "Apenas uma opcao "
+                type = "Apenas uma opcao"
                 minQtd = 1;
                 maxQtd = 1
                 console.log('minQtd:', minQtd, 'maxqtd', maxQtd);
