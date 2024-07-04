@@ -126,7 +126,7 @@ class scrapySaipos {
                 let optionPriceText = optionPriceElement ? optionPriceElement.textContent : "0";
                 let optionPrice = optionPriceText.replace(/[^\d,.]/g, '').replace('.', ',');
                 //let optionQtd = optionQtdElement ? optionQtdElement.textContent : "";
-                let optionDescription = optionDescriptionElement ? optionTitleElement.textContent : "";
+                let optionDescription = optionDescriptionElement ? optionDescriptionElement.textContent : "";
   
                 optionsComplement.push({
                   optionTitle: optionTitle,
@@ -145,11 +145,11 @@ class scrapySaipos {
               })
               console.log("- - - - - - - - - - - - - - - - - ")
               console.log("NOME DO COMPLEMENTO: ",complementName)
-              console.log("TEXTO DO TIPO DO COMPLEMENTO: ",typeComplementText.trim())
-              console.log("TIPO DO COMPLEMENT: ",typeComplement)
-              console.log("QUANTIDADE MIN: ",minQtd)
-              console.log("QUANTIDADE MAX: ",maxQtd)
-              console.log("REQUERED: ",required)
+              // console.log("TEXTO DO TIPO DO COMPLEMENTO: ",typeComplementText.trim())
+              // console.log("TIPO DO COMPLEMENT: ",typeComplement)
+              // console.log("QUANTIDADE MIN: ",minQtd)
+              // console.log("QUANTIDADE MAX: ",maxQtd)
+              // console.log("REQUERED: ",required)
               console.log("OPÇOES: ",optionsComplement)
               console.log("- - - - - - - - - - - - - - - - - ")
               console.log("                                  ")
@@ -163,13 +163,13 @@ class scrapySaipos {
             descricao: productDescricao,
             complementsDict: complementsDict
           });
-          console.log("- - - - - - - - - - - - - - - - - ")
-          console.log("NOME PRODUTO: ", productTitle)
-          console.log("DESCRIÇAO: ", productDescricao)
-          console.log("PREÇO PRODUTO: ", productPrice)
-          console.log("IMAGEM: ", imgSrc)
-          console.log("- - - - - - - - - - - - - - - - - ")
-          console.log("                                  ")
+          // console.log("- - - - - - - - - - - - - - - - - ")
+          // console.log("NOME PRODUTO: ", productTitle)
+          // console.log("DESCRIÇAO: ", productDescricao)
+          // console.log("PREÇO PRODUTO: ", productPrice)
+          // console.log("IMAGEM: ", imgSrc)
+          // console.log("- - - - - - - - - - - - - - - - - ")
+          // console.log("                                  ")
           window.history.go(-1)
           await this.sleep(1000)
         
