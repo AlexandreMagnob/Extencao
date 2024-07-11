@@ -192,7 +192,7 @@ class scrapyDino {
                   let optionLabelElement = optionElement.querySelector('label');
                   
                   if (optionLabelElement) {
-                    let optionLabelContent = optionLabelElement.textContent.trim();
+                    let optionLabelContent = optionLabelElement ? optionLabelElement.textContent.trim() : "0"
                     let optionParts = optionLabelContent.split('+');
                 
                     // Verifica se há uma parte do preço
