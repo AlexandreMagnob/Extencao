@@ -13,6 +13,7 @@ class HandlerScrapy {
       this.scrapySaipos = new scrapySaipos();
       this.scrapyNeemo = new scrapyNeemo();
       this.scrapyVucaFood = new scrapyVucaFood();
+      this.scrapyDiggy = new scrapyDiggy();
     }
   
     async handleScrapyChoice(restaurante) {
@@ -99,6 +100,14 @@ class HandlerScrapy {
         const scrapedData = this.scrapyNeemo.scrapedData
         await alert("Finalizado")
         const titleRestaurant = this.scrapyNeemo.titleRestaurant
+        await createCSV(scrapedData, titleRestaurant)
+      }
+      else if (restaurante === 'Diggy') {
+        await alert("Iniciando...");
+        await this.scrapyDiggy.clickProductCards()
+        const scrapedData = this.scrapyDiggy.scrapedData
+        await alert("Finalizado")
+        const titleRestaurant = this.scrapyDiggy.titleRestaurant
         await createCSV(scrapedData, titleRestaurant)
       }
       else if (restaurante === 'VucaFood') {

@@ -142,16 +142,19 @@ async processComplements(productModal) {
               for await (const optionElement of optionsElement) {
                   var optionTitleElement = optionElement.querySelector('.item-complement, .complement-name');
                   var optionPriceElement = optionElement.querySelector('.sub-item-price');
+                  var optionImgElement = optionElement.querySelector('.image-icon')
 
                   var optionTitle = optionTitleElement ? optionTitleElement.textContent.trim() : "";
                   var optionPriceText = optionPriceElement ? optionPriceElement.textContent : "0";
                   var optionPrice = optionPriceText.replace(/[^\d,.]/g, '').replace('.', ',');
+                  var optionImg = optionImgElement ? optionImgElement.src : "";
                   var optionDescription = "";
 
                   optionsComplement.push({
                       optionTitle: optionTitle,
                       optionPrice: optionPrice,
-                      optionDescription: optionDescription
+                      optionDescription: optionDescription,
+                      optionImg : optionImg
                   });
               }
 
@@ -171,6 +174,7 @@ async processComplements(productModal) {
               console.log("OPÇOES: ", optionsComplement)
               console.log("- - - - - - - - - - - - - - - - - ")
               console.log("                                  ")
+              
           }
       }
   }
@@ -246,9 +250,6 @@ async processComplements(productModal) {
 
         let productCards = categoryDiv.querySelectorAll('.item-container.w-100 .col-md-12.item, .col-md-12 .nopadding .mb-4');
 
-        console.log("TAMAHO PRODUTOS:", productCards.length);
-        console.log("CATEGORIA", {categoryDiv, categoryName});
-
         let productData = [];
         for await (const productIndex of [...Array(productCards.length).keys()]) {
           await this.sleep(500)
@@ -257,18 +258,37 @@ async processComplements(productModal) {
           let productCards = categoryDiv.querySelectorAll('.item-container.w-100 .col-md-12.item, .col-md-12 .nopadding .mb-4')
           let productCard = productCards[productIndex];
 
-          console.log({productIndex, productCard})
-
           let priceElement = productCard.querySelector('.price');
 
           productCard.scrollIntoView()
           await this.sleep(500)
           productCard.click()
+          await this.sleep(1000)
+          let esgotado = document.querySelector('.v--modal-box.v--modal')
+
+          if(esgotado){
+            
+            let botao = document.querySelector('.btn.btn-primary')
+            botao.click()
+          }
+          await this.sleep(1000)
+          let bebidaAlcoolica = document.querySelector('#age-verification > div > div.v--modal-box.v--modal')
+
+          if(bebidaAlcoolica){
+            let botao = document.querySelector('#age-verification > div > div.v--modal-box.v--modal > div > div.modal-header > button')
+            botao.click()
+          }
+          await this.sleep(1000)
+          let login = document.querySelector('.modal-content');
+
+          if(login){
+            let botao = document.querySelector('#app > div.container-fluid.nopadding > div.v--modal-overlay > div > div.v--modal-box.v--modal > div > form > div.modal-header > button')
+            botao.click()
+          }
 
             await this.sleep(1500)
             let productModal = document.querySelector('.modal-content');
             let titleElement = productModal.querySelector('.modal-title');
-            console.log(titleElement)
             let imgElement = productModal.querySelector('img[alt="Item image"]')
             let descricaoElement = productModal.querySelector('.item-description')
             let productTitle = titleElement ? titleElement.textContent : "";
@@ -286,7 +306,13 @@ async processComplements(productModal) {
               descricao: productDescricao,
               complementsDict: complementsDict
             });
-            console.log("Produto adicionado")
+            console.log("- - - - - - - - - - - - - - - - - ")
+            console.log("NOME PRODUTO: ", productTitle)
+            console.log("PREÇO PRODUTO: ", productPrice)
+            console.log("IMAGEM: ", imgSrc)
+            console.log("DESCRIÇAO: ", productDescricao)
+            console.log("- - - - - - - - - - - - - - - - - ")
+            console.log("                                  ")
             await this.backPage();
           }
         

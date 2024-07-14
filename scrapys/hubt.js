@@ -73,7 +73,7 @@ class scrapyHubt {
             let descricaoElement = productModal.querySelector('.ProductItemDialog__ProductDescription-j5dr03-2.bxZGzY');
             let productTitle = titleElement ? titleElement.textContent : "";
             let imgSrc = imageUrl ? imageUrl : "";
-            let productDescricao = descricaoElement ? descricaoElement.innerHTML.replace(/<br\s*\/?>/gi, '\n') : "";
+            let productDescricao = descricaoElement ? descricaoElement.innerHTML.replace(/<br\s*\/?>/gi, '\n\n') : "";
             let productPrice = "";
             let notComplement = "";
 

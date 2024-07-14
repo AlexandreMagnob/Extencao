@@ -172,7 +172,7 @@ class scrapyDino {
                   
                   
                 } else if (optionElement && optionElement.classList.contains('pb') && optionElement.classList.contains('pt')) {
-                  const optionText = optionElement.textContent;
+                  let optionText = optionElement.textContent;
               
                   // Expressão regular para encontrar o preço no formato R$ xx,xx
                   const priceRegex = /R\$\s*(\d+,\d{2})/;
@@ -180,11 +180,18 @@ class scrapyDino {
                   optionPrice = priceMatch ? priceMatch[1] : "";
               
                   // Removendo o preço do texto para obter apenas o título
-                  optionTitle = optionText.replace(priceRegex, "").trim();
+                  optionText = optionText.replace(priceRegex, "").trim();
+              
+                  // Removendo o texto "Máx. 3" do texto
+                  const maxTextRegex = /Máx\. \d+/;
+                  optionText = optionText.replace(maxTextRegex, "").trim();
               
                   // Removendo parênteses do final do texto
                   const parenthesesRegex = /\s*\(.*?\)$/;
-                  optionTitle = optionTitle.replace(parenthesesRegex, "").trim();
+                  optionTitle = optionText.replace(parenthesesRegex, "").trim();
+              
+                  // Garantir que não haja espaços extras
+                  optionTitle = optionTitle.trim();
               }
               
                 else if (optionElement.classList.contains('checkbox')) {

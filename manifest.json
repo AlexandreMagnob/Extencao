@@ -30,6 +30,7 @@
         "https://app-core.jotaja.com/*",
         "https://*.yooga.app/*",
         "https://*.cardapiodigital.io/*",
+        "https://www.diggy.menu/*",
         "https://*.saipos.com/*",
         "https://deliveryapp.neemo.com.br/*",
         "https://www.vucafood.com.br/*"
@@ -44,8 +45,10 @@
         "scrapys/hubt.js",
         "scrapys/jotaja.js",
         "scrapys/yooga.js",
+        "scrapys/diggy.js",
         "scrapys/cardapiodigital.js",
         "scrapys/saipos.js",
+        "scrapys/vucafoodd.js",
         "scrapys/vucafoodd.js",
         "scrapys/neemo.js",
         "handlerScrapy.js",
