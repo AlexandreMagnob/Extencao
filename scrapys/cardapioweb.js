@@ -1,4 +1,4 @@
-class ScrapyAnotai {
+class scrapyCardapioWeb {
   constructor() {
     this.scrapedData = [];
     this.titleRestaurant = ""
@@ -6,49 +6,11 @@ class ScrapyAnotai {
 
   sleep(ms) {     return new Promise(resolve => setTimeout(resolve, ms)); }
 
-  async checkAndScrape() {
-    await this.sleep(500);
-    const categoryCards = document.querySelectorAll('.category-card__container');
-    if (categoryCards.length > 0) {
-      await this.clickCategoryCards();
-    } else {
-      await this.clickProductCards();
-    }
-  }
-
-  async clickCategoryCards() {
-      let categoryGrid = document.querySelector('.category-grid');
-      let categoryCards = categoryGrid.querySelectorAll('.category-card__container');
+ 
   
-      for await (const categoryCardIndex of [...Array(categoryCards.length).keys()]) {
-          await this.sleep(500);
-  
-          let categoryGrid = document.querySelector('.category-grid');
-          let categoryCards = categoryGrid.querySelectorAll('.category-card__container');
-          let categoryCard = categoryCards[categoryCardIndex];
-  
-          console.log({ categoryCards, categoryCard });
-          // Adicione um tempo de espera antes do clique para garantir que a página esteja pronta
-          await this.sleep(1000);
-          // Use o método scrollIntoView para garantir que o elemento esteja visível
-          categoryCard.scrollIntoView();
-          // Clique no elemento
-          categoryCard.click();
-          console.log("clicou")
-          // Aguarde um tempo suficiente após o clique antes de chamar clickProductCards
-          await this.sleep(1000);
-          // Chame clickProductCards
-          await this.clickProductCards();
-          console.log("executou!")
-          // Aguarde antes de voltar à página anterior
-          await this.sleep(1000);
-          // Volte à página anterior
-          await this.backPage();
-      }
-  }
 
   async checkRepetition(complementExpandable) { 
-    let button = complementExpandable.querySelector("[data-testid='btn-plus']");
+    let button = complementExpandable.querySelector(".MuiSvgIcon-root");
     if (button) {
       return "com repeticao";
     } else {
@@ -64,28 +26,18 @@ class ScrapyAnotai {
     let minQtd = 0;
     let maxQtd = 0;
   
-    if (complement.match(/^Escolha (\d+) itens/)) {
-      const itemCount = parseInt(complement.match(/^Escolha (\d+) itens/)[1], 10);
-        type = 'Mais de uma opcao ' + repetition;
-        minQtd = itemCount;
-        maxQtd = itemCount;
-        console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
-      
-    }else if (complement.match(/^Escolha até (\d+) itens/)) {
-      const maxItems = parseInt(complement.match(/^Escolha até (\d+) itens/)[1], 10);
+     if (complement.match(/^Escolha até (\d+) opções/)) {
+      const maxItems = parseInt(complement.match(/^Escolha até (\d+) opções/)[1], 10);
       type = 'Mais de uma opcao ' + repetition;
       maxQtd = maxItems;
       console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
-    }else if (complement.match(/^Escolha até (\d+) item/)) {
-      type = 'Apenas uma opcao ';
-      maxQtd = 1;
-      console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
-    }else if ("Escolha 1 item") {
+    
+    }else if (complement =="Escolha 1 opção") {
       type = 'Apenas uma opcao ';
       maxQtd = 1;
       minQtd = 1;
       console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
-    }else if (complement.match(/^Escolha de \d+ até \d+ itens$/)) {
+    }else if (complement.match(/^Escolha de \d+ a \d+ opções$/)) {
       const minMaxItems = complement.match(/\d+/g);
       const minItems = parseInt(minMaxItems[0], 10);
       const maxItems = parseInt(minMaxItems[1], 10);
@@ -100,58 +52,62 @@ class ScrapyAnotai {
   async clickProductCards() {
     console.log("executando..");
     await this.sleep(1000);
-    let categoryDivs = document.querySelectorAll('.category-container');
+    let categoryDivs = document.querySelectorAll('.px-2.mt-8');
 
     for await (const categoryIndex of [...Array(categoryDivs.length).keys()]) {
-        let categoryDivs = document.querySelectorAll('.category-container, .category-details');
+        let categoryDivs = document.querySelectorAll('.px-2.mt-8');
         let categoryDiv = categoryDivs[categoryIndex];
-        let categoryNameElement = categoryDiv.querySelector('h2.title, .navigation-header__title');
+        let categoryNameElement = categoryDiv.querySelector('.mb-3');
         let categoryName = categoryNameElement ? categoryNameElement.textContent : "";
         console.log(categoryName);
-        let productCards = categoryDiv.querySelectorAll(".item-card.item");
-
+        let productCards = categoryDiv.querySelectorAll('[data-key="h-product-card"]');
+      console.log(productCards)
         let productData = [];
         let complementsDict;
         for await (const productIndex of [...Array(productCards.length).keys()]) {
-            let categoryDivs = document.querySelectorAll('.category-container');
+            let categoryDivs = document.querySelectorAll('.px-2.mt-8');
             let categoryDiv = categoryDivs[categoryIndex];
-            let productCards = categoryDiv.querySelectorAll(".item-card.item");
+            let productCards = categoryDiv.querySelectorAll('[data-key="h-product-card"]');
             let productCard = productCards[productIndex];
-
             await this.sleep(500);
-            if (productCard.querySelector('.badge') && productCard.querySelector('.badge').textContent === 'Esgotado') {
-                console.log("Produto esgotado, pulando...");
-                continue; // Pular para o próximo produto se estiver esgotado
-            }
+           
             productCard.click();
             await this.sleep(500);
 
-            let productContainer = document.querySelector('.item-header-container');
-            let titleElement = productContainer.querySelector('span.font-5');
-            let priceElement = productContainer.querySelector('span.price__now.font-3');
-            let imgElement = productContainer.querySelector('img');
-            let descricaoElement = productContainer.querySelector('span.weight-400');
+            let productContainer = document.querySelector('.relative.flex.flex-col.min-h-full.w-full');
+            let productContainer2 = document.querySelector('.flex.items-center.p-5');
+            let titleElement = productContainer.querySelector('.text-base.font-medium.leading-6.text-gray-700');
+            let priceElement = productContainer.querySelector('.mt-3.text-base.text-gray-700');
+            let imgElement = productContainer2.querySelector('img');
+            let descricaoElement = productContainer.querySelector('.text-sm.font-light.text-gray-500 ');
             let productTitle = titleElement ? titleElement.textContent : "";
+            console.log(productTitle)
             let priceText = priceElement ? priceElement.textContent : "";
-            let productPrice = priceText.replace(/[^\d,.]/g, '').replace('.', ',');
+            let productPrice = 0; 
+              if (priceText.includes("A partir de")) {
+                  productPrice = 0;
+              } else {
+                  // Caso contrário, extrai o valor numérico e ajusta a vírgula
+                  productPrice = priceText.replace(/[^\d,.]/g, '').replace('.', ',');
+              }
             let imgSrc = imgElement ? imgElement.src : "";
             let productDescricao = descricaoElement ? descricaoElement.textContent : "";
 
             complementsDict = [];
           await this.sleep(2000)
-          let complementExpandables = document.querySelectorAll('.expandable');
+          let complementExpandables = document.querySelectorAll('[class="p-0"]');
           
           for await (const complementExpandable of complementExpandables) {
-            let complementElements = complementExpandable.querySelectorAll('.expandable__fixed.pointer.bg-grey-12');
+            let complementElements = complementExpandable.querySelectorAll('.MuiListSubheader-root.p-4.text-gray-700.bg-gray-100 ');
             
             
             let optionsComplement = [];
   
             // Pegar o nome de cada complemento
             for await (const complementElement of complementElements) {
-              let typeComplementElement = complementElement.querySelector('.expandable__fixed__header__text__subtitle.font-1.text-grey');
-              let complementNameElement = complementElement.querySelector('.expandable__fixed__header__text__title.font-2.text-black');
-              let requiredElement = complementElement.querySelector('.badge');
+              let typeComplementElement = complementElement.querySelector('.text-xs.font-light');
+              let complementNameElement = complementElement.querySelector('.text-sm.font-medium');
+              let requiredElement = complementElement.querySelector('.p-1.font-normal.leading-3.text-white');
               let typeComplementText = typeComplementElement ? typeComplementElement.textContent : "";
 
               let [typeComplement, minQtd, maxQtd] = await this.processTypeComplement(typeComplementText, complementExpandable)
@@ -160,13 +116,13 @@ class ScrapyAnotai {
               // Pegar nome de cada opção do complemento da iteração
               
 
-              let optionsElement = complementExpandable.querySelectorAll('.chooser.column.w-100.no-user-select.chooser');
+              let optionsElement = complementExpandable.querySelectorAll('.flex.items-center.justify-between ');
               
               for await (const optionElement of optionsElement) {
-                let optionTitleElement = optionElement.querySelector('.weight-700.text-black.font-1');
-                let optionPriceElement = optionElement.querySelector('.price__now.weight-600.font-1');
-                let optionDescriptionElement = optionElement.querySelector('.chooser-info__description.text-grey-2.text-left.font-1.mb-1');
-                let optionImgELement = optionElement.querySelector('img');
+                let optionTitleElement = optionElement.querySelector('.flex.items-center.text-sm ');
+                let optionPriceElement = optionElement.querySelector('.mt-1.text-xs.font-medium ');
+                let optionDescriptionElement = optionElement.querySelector('.text-xs.font-light.text-gray-700');
+                let optionImgELement = optionElement.querySelector('img.bg-gray-100.object-contain.object-center.w-full.h-full.block');
                 //let optionQtdElement = optionElement.querySelector('span.text-grey-3');
   
                 let optionTitle = optionTitleElement ? optionTitleElement.textContent : "";
@@ -237,7 +193,7 @@ class ScrapyAnotai {
 
 async backPage() {
   await this.sleep(1000);
-  let back = document.querySelector('.icon-container.navigation-header__back__icon')
+  let back = document.querySelector('.MuiButtonBase-root.MuiIconButton-root.z-20.text-2xl.text-gray-500')
   if (back) {
     console.log("Voltou")
     back.click()
