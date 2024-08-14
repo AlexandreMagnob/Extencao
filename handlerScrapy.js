@@ -4,6 +4,7 @@ class HandlerScrapy {
       this.scrapyDino = new scrapyDino();
       this.scrapyAnotai = new ScrapyAnotai();
       this.scrapyGoomer = new ScrapyGoomer();
+      this.scrapyCoisaRuim = new ScrapyCoisaRuim();
       this.scrapyOlaClick = new ScrapyOlaClick();
       this.scrapyInstaDelivery = new scrapyInstaDelivery();
       this.scrapyHubt = new scrapyHubt();
@@ -117,6 +118,14 @@ class HandlerScrapy {
         const scrapedData = this.scrapyVucaFood.scrapedData
         await alert("Finalizado")
         const titleRestaurant = this.scrapyVucaFood.titleRestaurant
+        await createCSV(scrapedData, titleRestaurant)
+      }
+      else if (restaurante === 'Coisa Ruim') {
+        await alert("Iniciando...");
+        await this.scrapyCoisaRuim.clickProductCards()
+        const scrapedData = this.scrapyCoisaRuim.scrapedData
+        await alert("Finalizado")
+        const titleRestaurant = this.scrapyCoisaRuim.titleRestaurant
         await createCSV(scrapedData, titleRestaurant)
       }
       else if (restaurante === 'CardapioWeb') {
