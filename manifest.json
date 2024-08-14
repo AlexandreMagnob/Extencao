@@ -20,8 +20,8 @@
   "content_scripts": [
     {
       "matches": [
-        "https://*.anota.ai/*",
-        "https://jherpiedoces.com.br//*", 
+        "https://pedido.anota.ai/*",
+        "https://*.menudino.com/*", 
         "https://*.goomer.app/*",
         "https://doce-reino.com/*",
         "https://*.olaclick.net/*",
@@ -33,6 +33,7 @@
         "https://www.diggy.menu/*",
         "https://*.saipos.com/*",
         "https://deliveryapp.neemo.com.br/*",
+        "https://app.cardapioweb.com/*",
         "https://www.vucafood.com.br/*"
       ],
       "js": [
@@ -49,7 +50,7 @@
         "scrapys/cardapiodigital.js",
         "scrapys/saipos.js",
         "scrapys/vucafoodd.js",
-        "scrapys/vucafoodd.js",
+        "scrapys/cardapioweb.js",
         "scrapys/neemo.js",
         "handlerScrapy.js",
         "sheet_generation.js"

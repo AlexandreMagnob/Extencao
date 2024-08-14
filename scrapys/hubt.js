@@ -83,7 +83,7 @@ class scrapyHubt {
             let priceElement = "";
 
             if(complementElement){
-            priceElement = productModal.querySelector('.price-value');
+            priceElement = productModal.querySelector('.ProductItemDialog__ProductPriceStyled-j5dr03-7.jHqzxF');
             }
 
             

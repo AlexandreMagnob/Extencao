@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // Função para obter o nome do restaurante a partir da URL
   function getRestaurantFromUrl(url) {
     const sites = [
-      { urlPattern: /^https:\/\/.*\.anota\.ai\/.*/, value: "Anotai" },
+      { urlPattern: /^https:\/\/.*\pedido\.anota\.ai\/.*/, value: "Anotai" },
       { urlPattern: /^https:\/\/.*\.menudino\.com\/.*/, value: "Dino" },
       { urlPattern: /^https:\/\/.*\.goomer\.app\/.*/, value: "Goomer" },
       { urlPattern: /^https:\/\/.*\.ola\.click\/.*/, value: "OlaClick" },
@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
       { urlPattern: /^https:\/\/www\.vucafood\.com\.br\/.*/, value: "VucaFood" },
       { urlPattern: /^https:\/\/www\.diggy\.menu\/.*/, value: "Diggy" },
       { urlPattern: /^https:\/\/app\.jotaja\.com\/.*/, value: "Jotaja" },
+      { urlPattern: /^https:\/\/app\.cardapioweb\.com\/.*/, value: "CardapioWeb" },
       { urlPattern: /^https:\/\/.*\.yooga\.app\/.*/, value: "Yooga" },
       { urlPattern: /^https:\/\/.*\.cardapiodigital\.io\/.*/, value: "CardapioDigital" },
       { urlPattern: /^https:\/\/.*\.saipos\.com\/.*/, value: "Saipos" }
