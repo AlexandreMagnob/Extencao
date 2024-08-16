@@ -78,7 +78,7 @@ class scrapyCardapioWeb {
             let productContainer2 = document.querySelector('.flex.items-center.p-5');
             let titleElement = productContainer.querySelector('.text-base.font-medium.leading-6.text-gray-700');
             let priceElement = productContainer.querySelector('.mt-3.text-base.text-gray-700');
-            let imgElement = productContainer2.querySelector('img');
+            let imgElement = productContainer2 ? productContainer2.querySelector('img') : null;
             let descricaoElement = productContainer.querySelector('.text-sm.font-light.text-gray-500 ');
             let productTitle = titleElement ? titleElement.textContent : "";
             console.log(productTitle)
