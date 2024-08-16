@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
       { urlPattern: /^https:\/\/.*\.olaclick\.net\/.*/, value: "OlaClick" },
       { urlPattern: /^https:\/\/instadelivery\.com\.br\/.*/, value: "InstaDelivery" },
       { urlPattern: /^https:\/\/www\.hubt\.com\.br\/.*/, value: "Hubt" },
-      { urlPattern: /^https:\/\/coisaboafood\.com\.br\/.*/, value: "Coisa Ruim" },
+      { urlPattern: /^https:\/\/deliverydireto\.com\.br\/.*/, value: "Coisa Ruim" },
       { urlPattern: /^https:\/\/www\.vucafood\.com\.br\/.*/, value: "VucaFood" },
       { urlPattern: /^https:\/\/www\.diggy\.menu\/.*/, value: "Diggy" },
       { urlPattern: /^https:\/\/app\.jotaja\.com\/.*/, value: "Jotaja" },
