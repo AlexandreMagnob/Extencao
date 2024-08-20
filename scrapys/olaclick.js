@@ -174,8 +174,7 @@ class ScrapyOlaClick {
                   await this.sleep(500);
                   productCard.scrollIntoView();
                   let outOfStockElement = productCard.querySelector('.out-of-stock.product-card__out-of-stock');
-                  if (outOfStockElement && outOfStockElement.textContent.trim() === "Esgotado") {
-                      console.log('entrou');
+                  if (outOfStockElement && outOfStockElement.textContent.trim() === "Esgotado") {                             
                       continue;
                   }
                   productCard.click();

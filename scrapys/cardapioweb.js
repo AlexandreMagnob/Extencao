@@ -68,9 +68,13 @@ class scrapyCardapioWeb {
             let categoryDivs = document.querySelectorAll('.px-2.mt-8');
             let categoryDiv = categoryDivs[categoryIndex];
             let productCards = categoryDiv.querySelectorAll('[data-key="h-product-card"]');
+            let productExhausteds = categoryDiv.querySelectorAll('.absolute.top-0.right-0.overflow-hidden')
             let productCard = productCards[productIndex];
+            let productExhausted = productExhausteds[productIndex];
             await this.sleep(500);
-           
+           if(productExhausted){
+            continue;
+           }
             productCard.click();
             await this.sleep(500);
 
