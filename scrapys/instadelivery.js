@@ -265,7 +265,12 @@ async processComplements(productModal) {
           productCard.click()
           await this.sleep(1000)
           let esgotado = document.querySelector('.v--modal-box.v--modal')
-
+          let modal = document.querySelector('.modal-content'); 
+          
+          if(modal.textContent == "\n      Item indisponível (zerado)        \n     \n        Ok!\n      "){
+            document.querySelector("button").click();
+            continue;
+          }
           if(esgotado){
             
             let botao = document.querySelector('.btn.btn-primary')
@@ -279,12 +284,12 @@ async processComplements(productModal) {
             botao.click()
           }
           await this.sleep(1000)
-          let login = document.querySelector('.modal-content');
 
-          if(login){
+          if(modal){
             let botao = document.querySelector('#app > div.container-fluid.nopadding > div.v--modal-overlay > div > div.v--modal-box.v--modal > div > form > div.modal-header > button')
             botao.click()
           }
+
 
             await this.sleep(1500)
             let productModal = document.querySelector('.modal-content');
