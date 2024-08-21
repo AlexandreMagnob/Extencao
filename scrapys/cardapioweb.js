@@ -37,6 +37,11 @@ class scrapyCardapioWeb {
       maxQtd = 1;
       minQtd = 1;
       console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
+    }else if (complement =="Escolha até 1 opção") {
+      type = 'Apenas uma opcao ';
+      maxQtd = 1;
+      minQtd = 0;
+      console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
     }else if (complement.match(/^Escolha de \d+ a \d+ opções$/)) {
       const minMaxItems = complement.match(/\d+/g);
       const minItems = parseInt(minMaxItems[0], 10);
