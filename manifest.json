@@ -35,14 +35,11 @@
         "https://*.saipos.com/*",
         "https://deliveryapp.neemo.com.br/*",
         "https://app.cardapioweb.com/*",
-<<<<<<< HEAD
         "https://deliverydireto.com.br/*",
         "https://braseroburguer.com.br/*",
         "https://web.whatsapp.com/",
-        "https://www.vucafood.com.br/*"
-=======
+        "https://www.vucafood.com.br/*",
         "https://deliverydireto.com.br/*"
->>>>>>> 10fca83df3e8c918d1c1dcd9a831e640d3818b2a
       ],
       "js": [
         "papaparse.min.js",
