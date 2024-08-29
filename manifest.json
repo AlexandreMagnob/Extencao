@@ -36,6 +36,8 @@
         "https://deliveryapp.neemo.com.br/*",
         "https://app.cardapioweb.com/*",
         "https://deliverydireto.com.br/*",
+        "https://braseroburguer.com.br/*",
+        "https://web.whatsapp.com/",
         "https://www.vucafood.com.br/*"
       ],
       "js": [
@@ -55,6 +57,7 @@
         "scrapys/cardapioweb.js",
         "scrapys/coisaRuim.js",
         "scrapys/neemo.js",
+        "scrapys/whatsApp.js",
         "handlerScrapy.js",
         "sheet_generation.js"
       ],
