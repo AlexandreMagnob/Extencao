@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
       { urlPattern: /^https:\/\/.*\.goomer\.app\/.*/, value: "Goomer" },
       { urlPattern: /^https:\/\/.*\.ola\.click\/.*/, value: "OlaClick" },
       { urlPattern: /^https:\/\/.*\.olaclick\.net\/.*/, value: "OlaClick" },
+      { urlPattern: /^https:\/\/.*\web\.whatsapp\.com\/.*/, value: "WhatsApp" },
       { urlPattern: /^https:\/\/instadelivery\.com\.br\/.*/, value: "InstaDelivery" },
       { urlPattern: /^https:\/\/www\.hubt\.com\.br\/.*/, value: "Hubt" },
       { urlPattern: /^https:\/\/deliverydireto\.com\.br\/.*/, value: "Coisa Ruim" },
