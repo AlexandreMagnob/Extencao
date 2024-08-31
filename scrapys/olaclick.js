@@ -250,27 +250,20 @@ class ScrapyOlaClick {
                   
                   
                 }else if (optionElement.classList.contains('v-input')) {
-                  // Se a classe for 'checkbox', trata como um checkbox.
+                  // Se a classe for 'v-input', trata como um checkbox.
                   let optionDivElement = optionElement.querySelector('.topping-checkbox__label');
-
+              
                   if (optionDivElement) {
-
-                    let optionText = optionDivElement.textContent;
-                    console.log(optionText);
-                    let optionParts = optionText.split(/\s*\+\s*/);
-                    optionTitle = optionParts[0].trim();
-                    optionPrice = optionParts[1] ? optionParts[1].trim().replace(/[^\d,.]/g, '').replace(',', '.') : "0";
+                      let optionText = optionDivElement.childNodes[0].textContent.trim(); // Obtém o texto do título
+                      let priceElement = optionDivElement.querySelector('.price'); // Seleciona o elemento de preço
+                      let priceText = priceElement ? priceElement.textContent.trim() : "0"
+                      
+                      optionPrice = priceText.replace(/[^\d,.]/g, '').replace(',', '.');
                     
-                    
-                    // Certificar-se de que optionPriceText seja uma string antes de tentar acessar a propriedade textContent
-                    
-                    
-                  } 
-
-
-                    
-                  
-                }else if (optionElement.classList.contains('topping-incrementable')) {
+              
+                      optionTitle = optionText;
+                  }
+              }else if (optionElement.classList.contains('topping-incrementable')) {
                   let optionTitleElement = optionElement.querySelector('.topping-incrementable__label');
                   let optionPriceElement = optionElement.querySelector('.topping-incrementable__price');
                   
