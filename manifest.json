@@ -35,6 +35,7 @@
         "https://*.saipos.com/*",
         "https://deliveryapp.neemo.com.br/*",
         "https://app.cardapioweb.com/*",
+        "https://delivery.rota202.com.br/*",
         "https://deliverydireto.com.br/*"
       ],
       "js": [
