@@ -126,11 +126,11 @@ class ScrapyAnotai {
             productCard.click();
             await this.sleep(500);
 
-            let productContainer = document.querySelector('.item-header-container');
-            let titleElement = productContainer.querySelector('span.font-5');
-            let priceElement = productContainer.querySelector('span.price__now.font-3');
+            let productContainer = document.querySelector('.item-header-container,  .profile');
+            let titleElement = productContainer.querySelector('span.font-5, .name');
+            let priceElement = productContainer.querySelector('span.price__now.font-3, .price-value');
             let imgElement = productContainer.querySelector('img');
-            let descricaoElement = productContainer.querySelector('span.weight-400');
+            let descricaoElement = productContainer.querySelector('span.weight-400, .description');
             let productTitle = titleElement ? titleElement.textContent : "";
             let priceText = priceElement ? priceElement.textContent : "";
             let productPrice = priceText.replace(/[^\d,.]/g, '').replace('.', ',');
@@ -139,18 +139,18 @@ class ScrapyAnotai {
 
             complementsDict = [];
           await this.sleep(2000)
-          let complementExpandables = document.querySelectorAll('.expandable');
+          let complementExpandables = document.querySelectorAll('.expandable, .collapse');
           
           for await (const complementExpandable of complementExpandables) {
-            let complementElements = complementExpandable.querySelectorAll('.expandable__fixed.pointer.bg-grey-12');
+            let complementElements = complementExpandable.querySelectorAll('.expandable__fixed.pointer.bg-grey-12, .header.-expandable');
             
             
             let optionsComplement = [];
   
             // Pegar o nome de cada complemento
             for await (const complementElement of complementElements) {
-              let typeComplementElement = complementElement.querySelector('.expandable__fixed__header__text__subtitle.font-1.text-grey');
-              let complementNameElement = complementElement.querySelector('.expandable__fixed__header__text__title.font-2.text-black');
+              let typeComplementElement = complementElement.querySelector('.expandable__fixed__header__text__subtitle.font-1.text-grey, .description');
+              let complementNameElement = complementElement.querySelector('.expandable__fixed__header__text__title.font-2.text-black, .title');
               let requiredElement = complementElement.querySelector('.badge');
               let typeComplementText = typeComplementElement ? typeComplementElement.textContent : "";
 
@@ -160,13 +160,13 @@ class ScrapyAnotai {
               // Pegar nome de cada opção do complemento da iteração
               
 
-              let optionsElement = complementExpandable.querySelectorAll('.chooser.column.w-100.no-user-select.chooser');
+              let optionsElement = complementExpandable.querySelectorAll('.chooser.column.w-100.no-user-select.chooser, .additional-item');
               
               for await (const optionElement of optionsElement) {
-                let optionTitleElement = optionElement.querySelector('.weight-700.text-black.font-1');
-                let optionPriceElement = optionElement.querySelector('.price__now.weight-600.font-1');
-                let optionDescriptionElement = optionElement.querySelector('.chooser-info__description.text-grey-2.text-left.font-1.mb-1');
-                let optionImgELement = optionElement.querySelector('img');
+                let optionTitleElement = optionElement.querySelector('.weight-700.text-black.font-1, .name');
+                let optionPriceElement = optionElement.querySelector('.price__now.weight-600.font-1, .price');
+                let optionDescriptionElement = optionElement.querySelector('.chooser-info__description.text-grey-2.text-left.font-1.mb-1, .description');
+                let optionImgELement = optionElement.querySelector('img, .image');
                 //let optionQtdElement = optionElement.querySelector('span.text-grey-3');
   
                 let optionTitle = optionTitleElement ? optionTitleElement.textContent : "";
@@ -237,7 +237,7 @@ class ScrapyAnotai {
 
 async backPage() {
   await this.sleep(1000);
-  let back = document.querySelector('.icon-container.navigation-header__back__icon')
+  let back = document.querySelector('.icon-container.navigation-header__back__icon, .icon')
   if (back) {
     console.log("Voltou")
     back.click()

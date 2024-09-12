@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // Função para obter o nome do restaurante a partir da URL
   function getRestaurantFromUrl(url) {
     const sites = [
-      { urlPattern: /^https:\/\/.*\pedido\.anota\.ai\/.*/, value: "Anotai" },
+      { urlPattern: /^https:\/\/.*\.anota\.ai\/.*/, value: "Anotai" },
       { urlPattern: /^https:\/\/.*\.menudino\.com\/.*/, value: "Dino" },
       { urlPattern: /^https:\/\/.*\.goomer\.app\/.*/, value: "Goomer" },
       { urlPattern: /^https:\/\/.*\.ola\.click\/.*/, value: "OlaClick" },

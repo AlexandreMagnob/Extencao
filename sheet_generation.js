@@ -27,15 +27,16 @@ async function createCSV(data, name) {
         const productName = productData.title;
         const productDescription = productData.descricao;
         const productPrice = productData.price;
+        const promotionPrice = productData.promoPrice;
         const imgSrc = productData.imgSrc;
         const codigoPdv = ''; // Adicione o código PDV aqui, se tiver
   
         // Preencha os campos de código PDV e disponibilidade do item, se disponíveis
         if (codigoPdv && productData.disponibilidade) {
           const disponibilidade = productData.disponibilidade;
-          csvData.push(['Produto', productName, productDescription, productPrice, imgSrc, codigoPdv, disponibilidade]);
+          csvData.push(['Produto', productName, productDescription, productPrice,promotionPrice, imgSrc, codigoPdv, disponibilidade]);
         } else {
-          csvData.push(['Produto', productName, productDescription, productPrice, '', '', imgSrc]);
+          csvData.push(['Produto', productName, productDescription, productPrice, '', promotionPrice, imgSrc]);
         }
   
         productData.complementsDict.forEach(complementData => {

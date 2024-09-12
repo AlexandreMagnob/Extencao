@@ -134,6 +134,10 @@ class scrapyDino {
           let complementExpandables = productModal.querySelectorAll('.panel.panel-danger')
           for await (const complementExpandable of complementExpandables) {
             let complementElements = complementExpandable.querySelectorAll('.panel-heading')
+
+            if(complementExpandable.querySelector("[aria-expanded='false']")){
+              continue
+            }
             let optionsComplement = [];
             // Pegar o nome de cada complemento
             for await (const complementElement of complementElements) {

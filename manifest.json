@@ -20,7 +20,7 @@
   "content_scripts": [
     {
       "matches": [
-        "https://pedido.anota.ai/*",
+        "https://*.anota.ai/*",
         "https://*.menudino.com/*", 
         "https://*.goomer.app/*",
         "https://doce-reino.com/*",

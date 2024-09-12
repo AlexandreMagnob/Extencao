@@ -86,11 +86,13 @@ class scrapyCardapioWeb {
             let productContainer = document.querySelector('.relative.flex.flex-col.min-h-full.w-full');
             let productContainer2 = document.querySelector('.flex.items-center.p-5');
             let titleElement = productContainer.querySelector('.text-base.font-medium.leading-6.text-gray-700');
-            let priceElement = productContainer.querySelector('.mt-3.text-base.text-gray-700');
-            let imgElement = productContainer2 ? productContainer2.querySelector('img') : null;
+            let priceElement = productContainer.querySelector('.mt-3.text-base.text-gray-700, .text-sm.text-gray-500.line-through');
+            let promoPriceElement = productContainer.querySelector('.text-base.text-green-500');
+            let imgElement = productContainer2 ? productContainer2.querySelector('img.bg-gray-100') : null;
             let descricaoElement = productContainer.querySelector('.text-sm.font-light.text-gray-500 ');
             let productTitle = titleElement ? titleElement.textContent : "";
             console.log(productTitle)
+            let promoPriceText = promoPriceElement ? promoPriceElement.textContent : "";
             let priceText = priceElement ? priceElement.textContent : "";
             let productPrice = 0; 
               if (priceText.includes("A partir de")) {
@@ -98,7 +100,8 @@ class scrapyCardapioWeb {
               } else {
                   // Caso contrário, extrai o valor numérico e ajusta a vírgula
                   productPrice = priceText.replace(/[^\d,.]/g, '').replace('.', ',');
-              }
+                }
+            let productPromoPrice = promoPriceText.replace(/[^\d,.]/g, '').replace('.', ',');
             let imgSrc = imgElement ? imgElement.src : "";
             let productDescricao = descricaoElement ? descricaoElement.textContent : "";
 
@@ -128,27 +131,30 @@ class scrapyCardapioWeb {
               let optionsElement = complementExpandable.querySelectorAll('.flex.items-center.justify-between ');
               
               for await (const optionElement of optionsElement) {
-                let optionTitleElement = optionElement.querySelector('.flex.items-center.text-sm ');
-                let optionPriceElement = optionElement.querySelector('.mt-1.text-xs.font-medium ');
-                let optionDescriptionElement = optionElement.querySelector('.text-xs.font-light.text-gray-700');
-                let optionImgELement = optionElement.querySelector('img.bg-gray-100.object-contain.object-center.w-full.h-full.block');
-                //let optionQtdElement = optionElement.querySelector('span.text-grey-3');
-  
-                let optionTitle = optionTitleElement ? optionTitleElement.textContent : "";
-                let optionDescription = optionDescriptionElement ? optionDescriptionElement.textContent : "";
-                let optionPriceText = optionPriceElement ? optionPriceElement.textContent : "0";
-                let optionPrice = optionPriceText.replace(/[^\d,.]/g, '').replace('.', ',');
-                let optionImg = optionImgELement ? optionImgELement.src : "";
-                //let optionQtd = optionQtdElement ? optionQtdElement.textContent : "";
+                if (optionElement != complementExpandable.querySelector('div.flex.items-center.justify-between.space-x-2')){
+                  
                 
-  
-  
-                optionsComplement.push({
-                  optionTitle: optionTitle,
-                  optionPrice: optionPrice,
-                  optionDescription: optionDescription,
-                  optionImg: optionImg
-                });
+                  let optionTitleElement = optionElement.querySelector('.flex.items-center.text-sm ');
+                  let optionPriceElement = optionElement.querySelector('.mt-1.text-xs.font-medium ');
+                  let optionDescriptionElement = optionElement.querySelector('.text-xs.font-light.text-gray-700');
+                  let optionImgELement = optionElement.querySelector('img.bg-gray-100.object-contain.object-center.w-full.h-full.block');
+                  //let optionQtdElement = optionElement.querySelector('span.text-grey-3');
+    
+                  let optionTitle = optionTitleElement ? optionTitleElement.textContent : "";
+                  let optionDescription = optionDescriptionElement ? optionDescriptionElement.textContent : "";
+                  let optionPriceText = optionPriceElement ? optionPriceElement.textContent : "0";
+                  let optionPrice = optionPriceText.replace(/[^\d,.]/g, '').replace('.', ',');
+                  let optionImg = optionImgELement ? optionImgELement.src : "";
+                  //let optionQtd = optionQtdElement ? optionQtdElement.textContent : "";
+                  
+                  
+                  optionsComplement.push({
+                    optionTitle: optionTitle,
+                    optionPrice: optionPrice,
+                    optionDescription: optionDescription,
+                    optionImg: optionImg
+                  });
+                }
               }
   
               complementsDict.push({
@@ -175,6 +181,7 @@ class scrapyCardapioWeb {
           productData.push({
             title: productTitle,
             price: productPrice,
+            promoPrice : productPromoPrice,
             imgSrc: imgSrc,
             descricao: productDescricao,
             complementsDict: complementsDict

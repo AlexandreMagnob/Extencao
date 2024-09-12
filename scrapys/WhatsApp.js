@@ -19,6 +19,7 @@ class ScrapyWhatsApp {
           let categoryDiv = categoryDivs[categoryIndex];
           let categoryNameElement = categoryDiv.querySelector('.x1iyjqo2.x6ikm8r.x10wlt62.x1n2onr6.xlyipyv.xuxw1ft._ao3e');
           let categoryName = categoryNameElement ? categoryNameElement.textContent : "";
+          if (categoryName !== "Todos os Itens"){
           console.log(categoryName);
           await this.sleep(500);
           categoryDiv.querySelector("._ak8l._ak8m > a").click()
@@ -38,17 +39,40 @@ class ScrapyWhatsApp {
 
               
               let titleElement = productCard.querySelector('.x1iyjqo2.x6ikm8r.x10wlt62.x1n2onr6.xlyipyv.xuxw1ft._ao3e');
-              let priceElement = productCard.querySelector('.x1iyjqo2.x6ikm8r.x10wlt62.x1n2onr6.xlyipyv.xuxw1ft._ao3e');
-              let descricaoElement = productCard.querySelector('.x1iyjqo2.x6ikm8r.x10wlt62.x1n2onr6.xlyipyv.xuxw1ft._ao3e');
+              let priceElement = productCard.querySelectorAll('.x1c4vz4f.xs83m0k.xdl72j9.x1g77sc7.x78zum5.xozqiw3.x1oa3qoh.x12fk4p8.xeuugli.x2lwn1j.x1nhvcw1.x1q0g3np.x1cy8zhl')[1]
+              let descricaoElement = productCard.querySelectorAll('.x1c4vz4f.xs83m0k.xdl72j9.x1g77sc7.x78zum5.xozqiw3.x1oa3qoh.x12fk4p8.xeuugli.x2lwn1j.x1nhvcw1.x1q0g3np.x1cy8zhl')[0]
               let productTitle = titleElement ? titleElement.textContent : "";
               let priceText = priceElement ? priceElement.textContent : "";
               let productPrice = priceText.replace(/[^\d,]/g, '').replace('.', ',');
               let imgSrc = "";
               let productDescricao = descricaoElement ? descricaoElement.textContent : "";
-  
+              let optionTitle = ""
+              let optionPrice = ""
+              let optionDescription = ""
+              let optionImg = ""
+              let complementName = ""
+              let typeComplement = ""
+              let minQtd = ""
+
+              //FINALIZAR ESSA PARTE 
             await this.sleep(2000)
-            
-            
+
+            optionsComplement.push({
+              optionTitle: optionTitle,
+              optionPrice: optionPrice,
+              optionDescription: optionDescription,
+              optionImg: optionImg
+            });
+
+            complementsDict.push({
+                nameComplement: complementName,
+                typeComplement: typeComplement,
+                minQtd: minQtd,
+                maxQtd: maxQtd,
+                required: required,
+                options: optionsComplement
+              })
+
             productData.push({
               title: productTitle,
               price: productPrice,
@@ -71,6 +95,7 @@ class ScrapyWhatsApp {
         });
         await this.backPage(); 
         await this.sleep(1000)
+        }
       }
       //alert("Finalizado!")
   }
