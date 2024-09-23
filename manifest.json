@@ -37,6 +37,7 @@
         "https://app.cardapioweb.com/*",
         "https://braseroburguer.com.br/*",
         "https://web.whatsapp.com/",
+        "https://semola.strelo.com.br/*",
         "https://www.vucafood.com.br/*",
         "https://delivery.rota202.com.br/*",
         "https://deliverydireto.com.br/*"
@@ -58,6 +59,7 @@
         "scrapys/coisaRuim.js",
         "scrapys/neemo.js",
         "scrapys/whatsApp.js",
+        "scrapys/semola.js",
         "handlerScrapy.js",
         "sheet_generation.js"
       ],

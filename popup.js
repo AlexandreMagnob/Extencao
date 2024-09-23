@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
       { urlPattern: /^https:\/\/instadelivery\.com\.br\/.*/, value: "InstaDelivery" },
       { urlPattern: /^https:\/\/www\.hubt\.com\.br\/.*/, value: "Hubt" },
       { urlPattern: /^https:\/\/deliverydireto\.com\.br\/.*/, value: "Coisa Ruim" },
+      { urlPattern: /^https:\/\/semola\.strelo\.com\.br\/.*/, value: "Semola" },
       { urlPattern: /^https:\/\/www\.vucafood\.com\.br\/.*/, value: "VucaFood" },
       { urlPattern: /^https:\/\/www\.diggy\.menu\/.*/, value: "Diggy" },
       { urlPattern: /^https:\/\/app\.jotaja\.com\/.*/, value: "Jotaja" },
