@@ -8,8 +8,8 @@ class ScrapyAnotai {
 
   async checkAndScrape() {
     await this.sleep(500);
-    const categoryCards = document.querySelectorAll('.category-card__container');
-    if (categoryCards.length > 0) {
+    const categoryCards = document.querySelectorAll('.category-container, .category-details');
+    if (categoryCards) {
       await this.clickCategoryCards();
     } else {
       await this.clickProductCards();
@@ -17,14 +17,14 @@ class ScrapyAnotai {
   }
 
   async clickCategoryCards() {
-      let categoryGrid = document.querySelector('.category-grid');
-      let categoryCards = categoryGrid.querySelectorAll('.category-card__container');
+      let categoryGrid = document.querySelector('.categories-grid');
+      let categoryCards = categoryGrid.querySelectorAll('.box .-img');
   
       for await (const categoryCardIndex of [...Array(categoryCards.length).keys()]) {
           await this.sleep(500);
   
-          let categoryGrid = document.querySelector('.category-grid');
-          let categoryCards = categoryGrid.querySelectorAll('.category-card__container');
+          let categoryGrid = document.querySelector('.categories-grid');
+          let categoryCards = categoryGrid.querySelectorAll('.box .-img');
           let categoryCard = categoryCards[categoryCardIndex];
   
           console.log({ categoryCards, categoryCard });
@@ -221,7 +221,8 @@ class ScrapyAnotai {
           console.log("DESCRIÇAO: ", productDescricao)
           console.log("- - - - - - - - - - - - - - - - - ")
           console.log("                                  ")
-          await this.backPage();
+          await this.sleep(1000)
+          window.history.back();
           await this.sleep(1000)
           
       }
@@ -236,8 +237,8 @@ class ScrapyAnotai {
 
 
 async backPage() {
-  await this.sleep(1000);
-  let back = document.querySelector('.icon-container.navigation-header__back__icon, .icon')
+  await this.sleep(2000);
+  let back = document.querySelector('.icon-container.-align')
   if (back) {
     console.log("Voltou")
     back.click()

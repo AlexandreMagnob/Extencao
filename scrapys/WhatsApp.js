@@ -12,14 +12,16 @@ class ScrapyWhatsApp {
     async clickProductCards() {
       console.log("executando..");
       await this.sleep(1000);
-      let categoryDivs = document.querySelectorAll('.xvpee5o.x1y332i5.x178xt8z.x13fuv20.xyj1x25._ak72._ak7l._ak7s._ak7w');
+      let categoryDivs = document.querySelectorAll('.xvpee5o.x1y332i5.x178xt8z.x13fuv20.xyj1x25._ak72._ak7l._ak7s._ak7w, .x1okw0bk.x6ikm8r.x10wlt62.xwib8y2.x1xmf6yo');
   
       for await (const categoryIndex of [...Array(categoryDivs.length).keys()]) {
-          let categoryDivs = document.querySelectorAll('.xvpee5o.x1y332i5.x178xt8z.x13fuv20.xyj1x25._ak72._ak7l._ak7s._ak7w');
+         
+
+          let categoryDivs = document.querySelectorAll('.xvpee5o.x1y332i5.x178xt8z.x13fuv20.xyj1x25._ak72._ak7l._ak7s._ak7w, .x1okw0bk.x6ikm8r.x10wlt62.xwib8y2.x1xmf6yo');
           let categoryDiv = categoryDivs[categoryIndex];
           let categoryNameElement = categoryDiv.querySelector('.x1iyjqo2.x6ikm8r.x10wlt62.x1n2onr6.xlyipyv.xuxw1ft._ao3e');
           let categoryName = categoryNameElement ? categoryNameElement.textContent : "";
-          if (categoryName !== "Todos os Itens"){
+          if (categoryName.toLowerCase() !== "todos os itens"){
           console.log(categoryName);
           await this.sleep(500);
           categoryDiv.querySelector("._ak8l._ak8m > a").click()
@@ -46,6 +48,8 @@ class ScrapyWhatsApp {
               let productPrice = priceText.replace(/[^\d,]/g, '').replace('.', ',');
               let imgSrc = "";
               let productDescricao = descricaoElement ? descricaoElement.textContent : "";
+              let optionsComplement = []
+              let complementsDict = []
               let optionTitle = ""
               let optionPrice = ""
               let optionDescription = ""
@@ -53,6 +57,8 @@ class ScrapyWhatsApp {
               let complementName = ""
               let typeComplement = ""
               let minQtd = ""
+              let required = ""
+              let maxQtd = ""
 
               //FINALIZAR ESSA PARTE 
             await this.sleep(2000)
