@@ -14,10 +14,11 @@ document.addEventListener('DOMContentLoaded', function () {
       { urlPattern: /^https:\/\/instadelivery\.com\.br\/.*/, value: "InstaDelivery" },
       { urlPattern: /^https:\/\/www\.hubt\.com\.br\/.*/, value: "Hubt" },
       { urlPattern: /^https:\/\/deliverydireto\.com\.br\/.*/, value: "Coisa Ruim" },
+      { urlPattern: /^https:\/\/semola\.strelo\.com\.br\/.*/, value: "Semola" },
       { urlPattern: /^https:\/\/www\.vucafood\.com\.br\/.*/, value: "VucaFood" },
       { urlPattern: /^https:\/\/www\.diggy\.menu\/.*/, value: "Diggy" },
       { urlPattern: /^https:\/\/app\.jotaja\.com\/.*/, value: "Jotaja" },
-      { urlPattern: /^https:\/\/app\.cardapioweb\.com\/.*/, value: "CardapioWeb" },
+      { urlPattern: /^https:\/\/.*\.cardapioweb\.com\/.*/, value: "CardapioWeb" },
       { urlPattern: /^https:\/\/.*\.yooga\.app\/.*/, value: "Yooga" },
       { urlPattern: /^https:\/\/.*\.cardapiodigital\.io\/.*/, value: "CardapioDigital" },
       { urlPattern: /^https:\/\/.*\.saipos\.com\/.*/, value: "Saipos" }

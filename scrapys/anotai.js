@@ -8,8 +8,8 @@ class ScrapyAnotai {
 
   async checkAndScrape() {
     await this.sleep(500);
-    const categoryCards = document.querySelectorAll('.category-container, .category-details');
-    if (categoryCards) {
+    const categoryCards = document.querySelectorAll('.category-card__container, .box.-img');
+    if (categoryCards.length > 0) {
       await this.clickCategoryCards();
     } else {
       await this.clickProductCards();
@@ -17,14 +17,15 @@ class ScrapyAnotai {
   }
 
   async clickCategoryCards() {
-      let categoryGrid = document.querySelector('.categories-grid');
-      let categoryCards = categoryGrid.querySelectorAll('.box .-img');
+      let categoryGrid = document.querySelector('.category-grid, .categories-grid');
+      let categoryCards = categoryGrid.querySelectorAll('.category-card__container, .box.-img');
+
   
       for await (const categoryCardIndex of [...Array(categoryCards.length).keys()]) {
           await this.sleep(500);
-  
-          let categoryGrid = document.querySelector('.categories-grid');
-          let categoryCards = categoryGrid.querySelectorAll('.box .-img');
+
+          let categoryGrid = document.querySelector('.category-grid, .categories-grid');
+          let categoryCards = categoryGrid.querySelectorAll('.category-card__container, .box.-img');
           let categoryCard = categoryCards[categoryCardIndex];
   
           console.log({ categoryCards, categoryCard });
@@ -237,12 +238,15 @@ class ScrapyAnotai {
 
 
 async backPage() {
-  await this.sleep(2000);
-  let back = document.querySelector('.icon-container.-align')
-  if (back) {
-    console.log("Voltou")
-    back.click()
-}
+
+  await this.sleep(1000);
+
+  window.history.back()
+//   let back = document.querySelector('.icon-container.navigation-header__back__icon, .icon, .floating-btn.-back')
+//   if (back) {
+//     console.log("Voltou")
+//     back.click()
+// }
 }
 }
 

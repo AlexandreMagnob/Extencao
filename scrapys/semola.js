@@ -1,4 +1,4 @@
-class ScrapyCoisaRuim {
+class scrapySemola {
     constructor() {
       this.scrapedData = [];
       this.titleRestaurant = ""
@@ -6,19 +6,10 @@ class ScrapyCoisaRuim {
   
     sleep(ms) {     return new Promise(resolve => setTimeout(resolve, ms)); }
   
-    async checkAndScrape() {
-      await this.sleep(500);
-      const categoryCards = document.querySelectorAll('.category-card__container');
-      if (categoryCards.length > 0) {
-        await this.clickCategoryCards();
-      } else {
-        await this.clickProductCards();
-      }
-    }
-  
    
+  
     async checkRepetition(complementExpandable) { 
-      let button = complementExpandable.querySelector(".text-decoration-none.material-green");
+      let button = complementExpandable.querySelector("[data-testid='btn-plus']");
       if (button) {
         return "com repeticao";
       } else {
@@ -27,42 +18,46 @@ class ScrapyCoisaRuim {
   }
   
   
-    async processTypeComplement(typeComplement, complementExpandable) {
+    async processTypeComplement(typeComplement, complementExpandable, required) {
       const complement = typeComplement.trim();
       let repetition = await this.checkRepetition(complementExpandable);
       let type = "";
       let minQtd = 0;
       let maxQtd = 0;
-
-
-    if (complement.match(/^Escolha até (\d+) opções/)) {
+        
+      if(required === "OBRIGATÓRIO"){
+        minQtd = 1
+      }
+      else{
+        minQtd = 0
+      }
+    
+      if (complement.match(/^Escolha (\d+) opção/)) {
+        const itemCount = parseInt(complement.match(/^Escolha (\d+) opção/)[1], 10);
+          type = 'Mais de uma opcao ' + repetition;
+          minQtd = itemCount;
+          maxQtd = itemCount;
+          console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
+        
+      }else if (complement.match(/^Escolha até (\d+) opções/)) {
         const maxItems = parseInt(complement.match(/^Escolha até (\d+) opções/)[1], 10);
         type = 'Mais de uma opcao ' + repetition;
+        minQtd
         maxQtd = maxItems;
         console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
       }else if (complement.match(/^Escolha até (\d+) opção/)) {
         type = 'Apenas uma opcao ';
-        minQtd = 0;
         maxQtd = 1;
         console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
-      }
-      else if (complement.match(/^Selecione de (\d+) a (\d+) sabores/)) {
-        const minMaxItems = complement.match(/\d+/g);
-        const minItems = parseInt(minMaxItems[0], 20);
-        const maxItems = parseInt(minMaxItems[1], 20);
-        type = 'Mais de uma opcao sem repeticao' ;
-        minQtd = minItems;
-        maxQtd = maxItems;
-        console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
-      }else if (complement.match(/^Escolha pelo menos 1 e no máximo 1 opção./)) {
+      }else if ("Escolha 1 opção") {
         type = 'Apenas uma opcao ';
         maxQtd = 1;
         minQtd = 1;
         console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
-      }else if (complement.match(/^Escolha pelo menos \d+ e no máximo \d+ opções.$/)) {
+      }else if (complement.match(/^Escolha entre \d+ e \d+ opções$/)) {
         const minMaxItems = complement.match(/\d+/g);
-        const minItems = parseInt(minMaxItems[0], 20);
-        const maxItems = parseInt(minMaxItems[1], 20);
+        const minItems = parseInt(minMaxItems[0], 10);
+        const maxItems = parseInt(minMaxItems[1], 10);
         type = 'Mais de uma opcao ' + repetition;
         minQtd = minItems;
         maxQtd = maxItems;
@@ -74,22 +69,22 @@ class ScrapyCoisaRuim {
     async clickProductCards() {
       console.log("executando..");
       await this.sleep(1000);
-      let categoryDivs = document.querySelectorAll('.products-section.clearfix.js-products-section');
+      let categoryDivs = document.querySelectorAll('div[data-cy="product-list"] > div')
   
       for await (const categoryIndex of [...Array(categoryDivs.length).keys()]) {
-          let categoryDivs = document.querySelectorAll('.products-section.clearfix.js-products-section');
+          let categoryDivs = document.querySelectorAll('div[data-cy="product-list"] > div');
           let categoryDiv = categoryDivs[categoryIndex];
-          let categoryNameElement = categoryDiv.querySelector('.title.title--cover');
+          let categoryNameElement = categoryDiv.querySelector('.MuiTypography-root.MuiTypography-h6.css-lqh13o');
           let categoryName = categoryNameElement ? categoryNameElement.textContent : "";
           console.log(categoryName);
-          let productCards = categoryDiv.querySelectorAll(".items-list-item.js-items-list-item-tooltip");
+          let productCards = categoryDiv.querySelectorAll(".MuiBox-root.css-1ck107");
   
           let productData = [];
           let complementsDict;
           for await (const productIndex of [...Array(productCards.length).keys()]) {
-              let categoryDivs = document.querySelectorAll('.products-section.clearfix.js-products-section');
+              let categoryDivs = document.querySelectorAll('div[data-cy="product-list"] > div');
               let categoryDiv = categoryDivs[categoryIndex];
-              let productCards = categoryDiv.querySelectorAll(".items-list-item.js-items-list-item-tooltip");
+              let productCards = categoryDiv.querySelectorAll(".MuiBox-root.css-1ck107");
               let productCard = productCards[productIndex];
   
               await this.sleep(500);
@@ -97,69 +92,61 @@ class ScrapyCoisaRuim {
                   console.log("Produto esgotado, pulando...");
                   continue; // Pular para o próximo produto se estiver esgotado
               }
-
-              let productContainer = ""
-              let titleElement = ""
-              let priceElement = ""
-              let imgElement = ""
-              let descricaoElement = ""
-              
-
-              titleElement = productCard.querySelector('.title');
-              descricaoElement = productCard.querySelector('.description ');
-              imgElement =  productCard.querySelector('img');
-
-
               productCard.click();
-              await this.sleep(500);
+              await this.sleep(2000);
   
-              productContainer = document.querySelector('.modal-content.w920');
-              titleElement = productContainer.querySelector('.item-name');
-              priceElement = productContainer.querySelector('.add-to-cart-btn.btn.js-add-item');
-              imgElement = productContainer.querySelector('img');
-              descricaoElement = productContainer.querySelector('.box-text');
+              let productContainer = document.querySelector('.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation0.MuiCard-root.css-dow93b');
+              let titleElement = productContainer.querySelector('.MuiTypography-root.MuiTypography-h4.css-1a9urfw');
+              let priceElement = productContainer.querySelector('.product-info__price-container.MuiBox-root.css-tdqnlp');
+              let imgElement = productContainer.querySelector('img');
+              let descricaoElement = productContainer.querySelector('.MuiTypography-root.MuiTypography-body1product-info__description.css-mcxaxb');
               let productTitle = titleElement ? titleElement.textContent : "";
               let priceText = priceElement ? priceElement.textContent : "";
-              let productPrice = priceText.replace(/[^0-9,]+/g, '').trim();
+              let productPrice = 0 
+              if(priceText != "A partir de "){
+                productPrice = priceText.replace(/[^\d,.]/g, '').replace('.', ',');
+              }
+                
               let imgSrc = imgElement ? imgElement.src : "";
               let productDescricao = descricaoElement ? descricaoElement.textContent : "";
   
               complementsDict = [];
-            await this.sleep(2000)
-            let complementExpandables = document.querySelectorAll('.item-properties, .make-your-pizza-body');
+            await this.sleep(2500)
+            let complementExpandables = document.querySelectorAll('.MuiBox-root.css-178yklu');
             
             for await (const complementExpandable of complementExpandables) {
-              let complementElements = complementExpandable.querySelectorAll('.property, .js-section-rules-pizza section-rules-pizza');
+              let complementElements = complementExpandable.querySelectorAll('.MuiBox-root.css-l7jr7n');
               
               
               let optionsComplement = [];
     
               // Pegar o nome de cada complemento
               for await (const complementElement of complementElements) {
-                let typeComplementElement = complementElement.querySelector('.description, .js-section-rules-pizza section-rules-pizza');
-                let complementNameElement = complementElement.querySelector('.title, .js-section-rules-pizza section-rules-pizza');
+                let typeComplementElement = complementElement.querySelector('.MuiTypography-root.MuiTypography-body2.css-1vvxjg8');
+                let complementNameElement = complementElement.querySelector('.MuiTypography-root.MuiTypography-h6.css-lqh13o');
+                let requiredElement = complementElement.querySelector('.MuiChip-root.MuiChip-tag.MuiChip-sizeMedium.MuiChip-colorPrimary ');
                 let typeComplementText = typeComplementElement ? typeComplementElement.textContent : "";
+                let required = requiredElement ? requiredElement.textContent : "";
   
-                let [typeComplement, minQtd, maxQtd] = await this.processTypeComplement(typeComplementText, complementExpandable)
+                let [typeComplement, minQtd, maxQtd] = await this.processTypeComplement(typeComplementText, complementExpandable, required )
                 let complementName = complementNameElement ? complementNameElement.textContent : "";
                 // Pegar nome de cada opção do complemento da iteração
                 
   
-                let optionsElement = complementExpandable.querySelectorAll('li, .items-list-item');
+                let optionsElement = complementExpandable.querySelectorAll('.MuiBox-root.css-17rpjm7');
                 
                 for await (const optionElement of optionsElement) {
-                  let optionTitleElement = optionElement.querySelector('.option-name, .name, .title');
-                  
-                  let optionPriceElement = optionElement.querySelector('.option-price, .formatted-price, .price-value');
-                  let optionDescriptionElement = optionElement.querySelector('.option-description, .description');
+                  let optionTitleElement = optionElement.querySelector('.MuiTypography-root.MuiTypography-body1.css-860fmm');
+                  let optionPriceElement = optionElement.querySelector('.MuiTypography-root.MuiTypography-body2.option-info__price.css-1vvxjg8');
+                  let optionDescriptionElement = optionElement.querySelector('.MuiTypography-root.MuiTypography-body2.css-11ixqqy');
                   let optionImgELement = optionElement.querySelector('img');
                   //let optionQtdElement = optionElement.querySelector('span.text-grey-3');
     
                   let optionTitle = optionTitleElement ? optionTitleElement.textContent : "";
                   let optionDescription = optionDescriptionElement ? optionDescriptionElement.textContent : "";
                   let optionPriceText = optionPriceElement ? optionPriceElement.textContent : "0";
-                  let optionPrice = optionPriceText.replace(/[^0-9,]/g, '').replace(/^(\d+),(\d{2})$/, '$1,$2');
-                  let optionImg = "";
+                  let optionPrice = optionPriceText.replace(/[^\d,.]/g, '').replace('.', ',');
+                  let optionImg = optionImgELement ? optionImgELement.src : "";
                   //let optionQtd = optionQtdElement ? optionQtdElement.textContent : "";
                   
     
@@ -177,6 +164,7 @@ class ScrapyCoisaRuim {
                   typeComplement: typeComplement,
                   minQtd: minQtd,
                   maxQtd: maxQtd,
+                  required: required,
                   options: optionsComplement
                 })
                 console.log("- - - - - - - - - - - - - - - - - ")
@@ -185,6 +173,7 @@ class ScrapyCoisaRuim {
                 console.log("TIPO DO COMPLEMENT: ",typeComplement)
                 console.log("QUANTIDADE MIN: ",minQtd)
                 console.log("QUANTIDADE MAX: ",maxQtd)
+                console.log("REQUERED: ",required)
                 console.log("OPÇOES: ",optionsComplement)
                 console.log("- - - - - - - - - - - - - - - - - ")
                 console.log("                                  ")
@@ -206,7 +195,7 @@ class ScrapyCoisaRuim {
             console.log("- - - - - - - - - - - - - - - - - ")
             console.log("                                  ")
             await this.backPage();
-            await this.sleep(1000)
+            await this.sleep(2000)
             
         }
         this.scrapedData.push({
@@ -221,7 +210,7 @@ class ScrapyCoisaRuim {
   
   async backPage() {
     await this.sleep(1000);
-    let back = document.querySelector('.material-icons.close-button.js-modal-close')
+    let back = document.querySelector('.icon-container.navigation-header__back__icon, .icon')
     if (back) {
       console.log("Voltou")
       back.click()
@@ -230,11 +219,11 @@ class ScrapyCoisaRuim {
   }
   
   function desativarAlerta() {
-    const alertContainer = document.querySelector('[data-testid="alert-container"]');
+    const alertContainer = document.querySelector('body > div.MuiModal-root.css-8ndowl > div.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation0.MuiCard-root.css-dow93b > div.product__wrapper--header.MuiBox-root.css-1trmes0 > button');
     if (alertContainer) {
       alertContainer.remove();
     }
   }
   // Chame a função desativarAlerta antes de executar outras ações
   desativarAlerta();
- 1  
+  
