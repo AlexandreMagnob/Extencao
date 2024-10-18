@@ -19,10 +19,11 @@ class ScrapyAnotai {
   async clickCategoryCards() {
       let categoryGrid = document.querySelector('.category-grid, .categories-grid');
       let categoryCards = categoryGrid.querySelectorAll('.category-card__container, .box.-img');
+
   
       for await (const categoryCardIndex of [...Array(categoryCards.length).keys()]) {
           await this.sleep(500);
-  
+
           let categoryGrid = document.querySelector('.category-grid, .categories-grid');
           let categoryCards = categoryGrid.querySelectorAll('.category-card__container, .box.-img');
           let categoryCard = categoryCards[categoryCardIndex];
@@ -221,7 +222,8 @@ class ScrapyAnotai {
           console.log("DESCRIÇAO: ", productDescricao)
           console.log("- - - - - - - - - - - - - - - - - ")
           console.log("                                  ")
-          await this.backPage();
+          await this.sleep(1000)
+          window.history.back();
           await this.sleep(1000)
           
       }
@@ -236,6 +238,7 @@ class ScrapyAnotai {
 
 
 async backPage() {
+
   await this.sleep(1000);
 
   window.history.back()

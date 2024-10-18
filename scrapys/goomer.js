@@ -47,10 +47,14 @@ class ScrapyGoomer {
         type = 'Mais de uma opcao ' + repetition;
         minQtd = 0
         maxQtd = maxItems;
-      } else if (complement.match(/^Escolha de \d+ até \d+ opções$/)) {
+      } else if (complement.startsWith("Escolha 1 opção ")) {
+        type = 'Apenas uma opcao';
+        minQtd = 1
+        maxQtd = 1;
+      }
+      else if (complement.match(/^Escolha até \d+ opções$/)) {
         const minMaxItems = complement.match(/\d+/g);
         const minItems = parseInt(minMaxItems[0], 10);
-        const maxItems = parseInt(minMaxItems[1], 10);
         type = 'Mais de uma opcao ' + repetition;
         minQtd = minItems;
         maxQtd = maxItems;
@@ -65,16 +69,16 @@ class ScrapyGoomer {
 
       this.titleRestaurant = (document.querySelector('.sc-msiz1g-0 strong') || {}).textContent || '';
       console.log(this.titleRestaurant)
-      let categoryDivs = document.querySelectorAll('.sc-4uh17g-0');
+      let categoryDivs = document.querySelectorAll('.sc-1y3v27u-0.fgFJsx');
     
       for await (const categoryIndex of [...Array(categoryDivs.length).keys()]) {
         await this.sleep(500)
-        let categoryDivs = document.querySelectorAll('.sc-4uh17g-0');
+        let categoryDivs = document.querySelectorAll('.sc-1y3v27u-0.fgFJsx');
         let categoryDiv = categoryDivs[categoryIndex];
         let categoryNameElement = categoryDiv.querySelector('h2')
         let categoryName = categoryNameElement ? categoryNameElement.textContent : "";
         
-        let productCards = categoryDiv.querySelectorAll('[data-test="product-item"]')
+        let productCards = categoryDiv.querySelectorAll('.sc-1wz8xa2-0.iXjGVR')
 
         console.log(categoryName)
         console.log(productCards.length)
@@ -82,9 +86,9 @@ class ScrapyGoomer {
         let productData = [];
         for await (const productIndex of [...Array(productCards.length).keys()]) {
           await this.sleep(500)
-          let categoryDivs = document.querySelectorAll('.sc-4uh17g-0');
+          let categoryDivs = document.querySelectorAll('.sc-1y3v27u-0.fgFJsx');
           let categoryDiv = categoryDivs[categoryIndex];
-          let productCards = categoryDiv.querySelectorAll('[data-test="product-item"]')
+          let productCards = categoryDiv.querySelectorAll('.sc-1wz8xa2-0.iXjGVR')
           let productCard = productCards[productIndex];
           
           console.log({productIndex, productCard})
@@ -95,23 +99,23 @@ class ScrapyGoomer {
 
             // Agora, vamos adicionar um atraso antes de coletar os dados.
             await this.sleep(1500)
-            let productModal = document.querySelector('.sc-1w3vq2h-2');
-            let titleElement = productModal.querySelector('.name');
+            let productModal = document.querySelector('.sc-1w3vq2h-1.edhcrD');
+            let titleElement = productModal.querySelector('.sc-1w3vq2h-3.KCUhr');
             console.log(titleElement)
             let imgElement = productModal.querySelector('img');
-            let descricaoElement = productModal.querySelector('.description');
+            let descricaoElement = productModal.querySelector('.content-css');
             let productTitle = titleElement ? titleElement.textContent : "";
             console.log(productTitle)
-            let priceElement = productModal.querySelector('.price');
+            let priceElement = productModal.querySelector('.sc-1w3vq2h-5.jFRomQ');
             let priceText = priceElement ? priceElement.textContent : "";
             let productPrice = priceText.replace(/[^\d,.]/g, '').replace('.', ',')
             let imgSrc = imgElement ? imgElement.src : "";
             let productDescricao = descricaoElement ? descricaoElement.textContent : "";
     
             let complementsDict = []
-            let complementExpandables = document.querySelectorAll('.sc-15b5d6c-0 , .sc-17x8vpa-0.eNRZh');
+            let complementExpandables = document.querySelectorAll('.sc-17x8vpa-0.eNRZh');
             for await (const complementExpandable of complementExpandables) {
-              let complementElements = complementExpandable.querySelectorAll('.sc-470djk-0')
+              let complementElements = complementExpandable.querySelectorAll('.sc-470djk-0.krZDNj')
               let optionsComplement = [];
               // Pegar o nome de cada complemento
               for await (const complementElement of complementElements) {
@@ -123,11 +127,11 @@ class ScrapyGoomer {
                 let complementName = complementNameElement ? complementNameElement.textContent : "";
                 
                 // Pegar nome de cada opção do complemento da iteração
-                let optionsElement = complementExpandable.querySelectorAll('.sc-zh9q04-0');
+                let optionsElement = complementExpandable.querySelectorAll('.sc-zh9q04-0.iCLUWc');
                 for await (const optionElement of optionsElement) {
 
-                  let optionTitleElement = optionElement.querySelector('.description');
-                  let optionPriceElement = optionElement.querySelector('.value');
+                  let optionTitleElement = optionElement.querySelector('.sc-zh9q04-5.kRxIHy');
+                  let optionPriceElement = optionElement.querySelector('.sc-zh9q04-7.eRsRjQ.value ');
 
                   let optionTitle = optionTitleElement ? optionTitleElement.textContent : "";
                   let optionPriceText = optionPriceElement ? optionPriceElement.textContent : "0";
