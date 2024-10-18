@@ -41,6 +41,7 @@
         "https://fastgoodmarmitas.com.br/*",
         "https://semola.strelo.com.br/*",
         "https://www.vucafood.com.br/*",
+        "<all_urls>",
         "https://delivery.devorepizza.com.br/*",
         "https://delivery.rota202.com.br/*",
         "https://deliverydireto.com.br/*"
