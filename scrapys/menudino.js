@@ -115,7 +115,7 @@ class scrapyDino {
           innerDiv.click();
           
           // Agora, vamos adicionar um atraso antes de coletar os dados.
-          await this.sleep(1000)
+          await this.sleep(2000)
           let productModal = document.querySelector('.modal-dialog');
           let titleElement = productModal.querySelector('#produtoModalNome');
           console.log(titleElement)
