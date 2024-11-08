@@ -7,18 +7,11 @@ class scrapySaipos {
   sleep(ms) {     return new Promise(resolve => setTimeout(resolve, ms)); }
 
     async checkRepetition(complementExpandable) { 
-      const plusButton = complementExpandable.querySelector('ion-button[data-qa="add-choice"]');     
-      if(plusButton){ 
-      plusButton.click(); 
-      await this.sleep(500)
-      const plusButtonDisalbe = complementExpandable.querySelector('.button-disabled')
-        if(plusButtonDisalbe){
-          return "sem repeticao"
-        }else{
-          return "com repeticao"
-        }
-    }else {
-          return "sem repeticao";
+      const plusButton = complementExpandable.querySelector('.more');     
+      if (plusButton) {
+        return "com repeticao";
+      } else {
+        return "sem repeticao";
       }
     }
 
@@ -28,24 +21,30 @@ class scrapySaipos {
 
         let minQtd = 0;
         let maxQtd = 0;
-        if (required === "OBRIGATÓRIO") {
-          minQtd = 1;
-        }
 
+        if(required == "Obrigatório"){
+          minQtd = 1
+        }
+        if(!typeComplement){
+          maxQtd = 1
+        }
         
-        const minMatch = complement.match(/Escolha pelo menos uma opção/);
+        const minMatch = complement.match(/Escolha pelo menos (\d+) opções/);
+        const minMatch2 = complement.match(/Escolha pelo menos 1 opção/);
         const minOneMatch = complement.match(/Escolha até 1 opção/);
         const matchSelectUntil = complement.match(/^Escolha até (\d+) opções/);
 
          if(minMatch){
-          minQtd = 1;
-          maxQtd = 1
+          minQtd = parseInt(minMatch[1], 10)
+          maxQtd = parseInt(minMatch[1], 10);
         }else if(matchSelectUntil){
           maxQtd = parseInt(matchSelectUntil[1], 10);
         }else if(minOneMatch){
           maxQtd = 1
+        }else if(minMatch2){
+          minQtd = 1;
+          maxQtd = 1;
         }
-          
       
         
         let type = maxQtd > 1 ? "Mais de uma opcao " + repetition : "Apenas uma opcao ";
@@ -57,26 +56,27 @@ class scrapySaipos {
   async clickProductCards() {
     console.log("executando..")
     await this.sleep(1000)
-    let categoryDivs = document.querySelectorAll('.category-container');
-    for await (const categoryIndex of [...Array(categoryDivs.length).keys()]) {
-      await this.sleep(500)
-      let categoryDivs = document.querySelectorAll('.category-container');
-      let categoryDiv = categoryDivs[categoryIndex];
-      let categoryNameElement = categoryDiv.querySelector('[data-qa="category-desc"]');
+    let categoryDivs = document.querySelectorAll('section[_ngcontent-ng-c2250877296]');
+    let categories = document.querySelectorAll('.categories-content');
+
+    for (let categoryIndex = 0; categoryIndex < categoryDivs.length; categoryIndex++) {
+      await this.sleep(500);
+      
+      let currentCategory = categories[categoryIndex];
+      if (!currentCategory) continue; 
+      let categoryNameElement = currentCategory.querySelector('.category-title');
       let categoryName = categoryNameElement ? categoryNameElement.textContent : "";
-      console.log(categoryName)
-      let productCards = categoryDiv.querySelectorAll(".list_circle_detail");
-  
+      console.log(categoryName);
+      let productCards = currentCategory.querySelectorAll(".col-12");
       let productData = [];
-      for await (const productIndex of [...Array(productCards.length).keys()]) {
-        await this.sleep(1000)
-        let categoryDivs = document.querySelectorAll('.category-container');
-        let categoryDiv = categoryDivs[categoryIndex];
-        let productCards = categoryDiv.querySelectorAll((".list_circle_detail"));
+      
+      for (let productIndex = 0; productIndex < productCards.length; productIndex++) {
+        await this.sleep(1000);
+        let currentCategory = categories[categoryIndex];
+        let productCards = currentCategory.querySelectorAll(".col-12");
         let productCard = productCards[productIndex];
-        let priceElement = productCard.querySelector('#variation-price');
-        let priceText = priceElement ? priceElement.textContent : "";
-        let productPrice = priceText.replace(/[^\d,.]/g, '').replace('.', ',')
+        if (!productCard) continue; 
+        
 
           await this.sleep(500)
           productCard.scrollIntoView();
@@ -84,47 +84,51 @@ class scrapySaipos {
           // Agora, vamos adicionar um atraso antes de coletar os dados.
           await this.sleep(1000)
         console.log("clicou")
-          let productModal = document.querySelector('#main-content')
-          let titleElement = productModal.querySelector('h5[data-qa="item-description"]');
-          let imgElement = productModal.querySelectorAll('img[alt="Logo"]')[1];
-          let descricaoElement = productModal.querySelector('p[data-qa="item-detail"');
+          let productModal = document.querySelector('.modal-content')
+          let titleElement = productModal.querySelector('.title');
+          let imgElement = productModal.querySelector('.img-fluid');
+          let descricaoElement = productModal.querySelector('.description');
           let productTitle = titleElement ? titleElement.textContent : "";
           let imgSrc = imgElement ? imgElement.src : "";
           let productDescricao = descricaoElement ? descricaoElement.textContent : "";
+          let priceElement = productModal.querySelector('.price');
+          let priceText = priceElement ? priceElement.textContent : "";
+          let productPrice = priceText.replace(/[^\d,.]/g, '').replace('.', ',')
   
           let complementsDict = []
-          let complementExpandables = document.querySelectorAll('div[style="width: 100%;"]:not(.quantity):not(.list_circle_detail)')
+          let complementExpandables = document.querySelectorAll('.content-item')
 
           for await (const complementExpandable of complementExpandables) {
 
             let optionsComplement = [];
 
               
-              let typeComplementElement = complementExpandable.querySelector('.type_select');
-              let requiredElement = complementExpandable.querySelector('.ion-float-end');
-              let complementNameElement = complementExpandable.querySelector('h4[data-qa="additional"]');
+              let typeComplementElement = complementExpandable.querySelector('.text-options.dark-text');
+              let requiredElement = complementExpandable.querySelector('.tag.tag-required')
+              let complementNameElement = complementExpandable.querySelector('.fw-medium.dark-text');
               let typeComplementText = typeComplementElement ? typeComplementElement.textContent : "";
               let required = ""
-
-              if (requiredElement) {
+              
+              if(requiredElement){
                 let requiredText = requiredElement.textContent.trim();
                 required = requiredElement ? requiredElement.textContent : "";
                 typeComplementText = typeComplementText.replace(requiredText, '');
               }
 
-              let [typeComplement, minQtd, maxQtd] = await this.processTypeComplement(typeComplementText, complementExpandable,required)
+              let [typeComplement, minQtd, maxQtd] = await this.processTypeComplement(typeComplementText, complementExpandable, required)
               let complementName = complementNameElement ? complementNameElement.textContent : "";
               // Pegar nome de cada opção do complemento da iteração
-              let optionsElement = complementExpandable.querySelectorAll('.choice-item-label.sc-ion-label-md-h.sc-ion-label-md-s.md.hydrated');
+              await this.sleep(500)
+              let optionsElement = complementExpandable.querySelectorAll('.d-flex.justify-content-between');
               for await (const optionElement of optionsElement) {
-                let optionTitleElement = optionElement.querySelector('span[data-qa="choice-item-description"]');
-                let optionPriceElement = optionElement.querySelector('div[data-qa="item-price"]');
-                let optionDescriptionElement = optionElement.querySelector('p')
+                let optionTitleElement = optionElement.querySelector('.product-name');
+                let optionPriceElement = optionElement.querySelector('.product-price');
+                let optionDescriptionElement = optionElement.querySelector('.product-description.product-description-without-photo')
                 //let optionQtdElement = optionElement.querySelector('span.text-grey-3');
   
                 let optionTitle = optionTitleElement ? optionTitleElement.textContent : "";
                 let optionPriceText = optionPriceElement ? optionPriceElement.textContent : "0";
-                let optionPrice = optionPriceText.replace(/[^\d,.]/g, '').replace('.', ',');
+                let optionPrice = optionPriceText.replace(/[^0-9,]/g, '').replace('.', ',');
                 //let optionQtd = optionQtdElement ? optionQtdElement.textContent : "";
                 let optionDescription = optionDescriptionElement ? optionDescriptionElement.textContent : "";
   
@@ -146,10 +150,10 @@ class scrapySaipos {
               console.log("- - - - - - - - - - - - - - - - - ")
               console.log("NOME DO COMPLEMENTO: ",complementName)
               // console.log("TEXTO DO TIPO DO COMPLEMENTO: ",typeComplementText.trim())
-              // console.log("TIPO DO COMPLEMENT: ",typeComplement)
-              // console.log("QUANTIDADE MIN: ",minQtd)
-              // console.log("QUANTIDADE MAX: ",maxQtd)
-              // console.log("REQUERED: ",required)
+              console.log("TIPO DO COMPLEMENT: ",typeComplement)
+              console.log("QUANTIDADE MIN: ",minQtd)
+              console.log("QUANTIDADE MAX: ",maxQtd)
+              console.log("REQUERED: ",required)
               console.log("OPÇOES: ",optionsComplement)
               console.log("- - - - - - - - - - - - - - - - - ")
               console.log("                                  ")
@@ -163,15 +167,16 @@ class scrapySaipos {
             descricao: productDescricao,
             complementsDict: complementsDict
           });
-          // console.log("- - - - - - - - - - - - - - - - - ")
-          // console.log("NOME PRODUTO: ", productTitle)
-          // console.log("DESCRIÇAO: ", productDescricao)
-          // console.log("PREÇO PRODUTO: ", productPrice)
-          // console.log("IMAGEM: ", imgSrc)
-          // console.log("- - - - - - - - - - - - - - - - - ")
-          // console.log("                                  ")
-          window.history.go(-1)
-          await this.sleep(1000)
+          console.log("- - - - - - - - - - - - - - - - - ")
+          console.log("NOME PRODUTO: ", productTitle)
+          console.log("DESCRIÇAO: ", productDescricao)
+          console.log("PREÇO PRODUTO: ", productPrice)
+          console.log("IMAGEM: ", imgSrc)
+          console.log("- - - - - - - - - - - - - - - - - ")
+          console.log("                                  ")
+          await this.sleep(500)
+          await this.backPage();
+          await this.sleep(500)
         
       }
       this.scrapedData.push({
@@ -186,7 +191,7 @@ class scrapySaipos {
 
 async backPage() {
   await this.sleep(1000);
-  let back = document.querySelector('.nav_btn.floatLeft')
+  let back = document.querySelector('.btn-close.d-flex.justify-content-center.align-items-center')
   if (back) {
     back.click()
 }}
