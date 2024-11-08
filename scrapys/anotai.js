@@ -49,7 +49,7 @@ class ScrapyAnotai {
   }
 
   async checkRepetition(complementExpandable) { 
-    let button = complementExpandable.querySelector("[data-testid='btn-plus']");
+    let button = complementExpandable.querySelector(".icon-container.-align");
     if (button) {
       return "com repeticao";
     } else {
@@ -81,11 +81,6 @@ class ScrapyAnotai {
       type = 'Apenas uma opcao ';
       maxQtd = 1;
       console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
-    }else if ("Escolha 1 item") {
-      type = 'Apenas uma opcao ';
-      maxQtd = 1;
-      minQtd = 1;
-      console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
     }else if (complement.match(/^Escolha de \d+ até \d+ itens$/)) {
       const minMaxItems = complement.match(/\d+/g);
       const minItems = parseInt(minMaxItems[0], 10);
@@ -93,6 +88,11 @@ class ScrapyAnotai {
       type = 'Mais de uma opcao ' + repetition;
       minQtd = minItems;
       maxQtd = maxItems;
+      console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
+    }else if ("Escolha 1 item") {
+      type = 'Apenas uma opcao ';
+      maxQtd = 1;
+      minQtd = 1;
       console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
     }
     return [type, minQtd, maxQtd];
