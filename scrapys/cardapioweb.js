@@ -33,11 +33,11 @@ class scrapyCardapioWeb {
       console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
     
     }else if (complement =="Escolha 1 opção") {
-      type = 'Apenas uma opcao ';
+      type = 'Apenas uma opcao';
       maxQtd = 1;
       minQtd = 1;
       console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
-    }else if (complement =="Escolha até 1 opção") {
+    }else if (complement == "Escolha até 1 opção") {
       type = 'Apenas uma opcao ';
       maxQtd = 1;
       minQtd = 0;
