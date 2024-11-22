@@ -167,7 +167,7 @@ class ScrapyAnotai {
                 let optionTitleElement = optionElement.querySelector('.weight-700.text-black.font-1, .name');
                 let optionPriceElement = optionElement.querySelector('.price__now.weight-600.font-1, .price');
                 let optionDescriptionElement = optionElement.querySelector('.chooser-info__description.text-grey-2.text-left.font-1.mb-1, .description');
-                let optionImgELement = optionElement.querySelector('img, .image');
+                let optionImgELement = optionElement.querySelector('img');
                 //let optionQtdElement = optionElement.querySelector('span.text-grey-3');
   
                 let optionTitle = optionTitleElement ? optionTitleElement.textContent : "";
