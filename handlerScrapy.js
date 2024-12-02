@@ -94,8 +94,7 @@ class HandlerScrapy {
         await this.scrapyGoomer.clickProductCards()
         const scrapedData = this.scrapyGoomer.scrapedData
         await alert("Finalizado")
-        const titleRestaurant = this.scrapyGoomer.titleRestaurant
-        await createCSV(scrapedData, titleRestaurant)
+        await createCSV(scrapedData)
       }
       else if (restaurante === 'OlaClick') {
         await alert("Iniciando...");
