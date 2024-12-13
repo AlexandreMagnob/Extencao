@@ -165,23 +165,23 @@ class ScrapyOlaClick {
               let productData = [];
 
               for await (const productIndex of [...Array(productCards.length).keys()]) {
-                  await this.sleep(1000);
+                  await this.sleep(500);
                   let categoryDivs = document.querySelectorAll('[data-v-294cdcdc=""][data-v-040becfc=""] > [data-v-294cdcdc=""]');
                   let categoryDiv = categoryDivs[categoryIndex];
                   let productCards = categoryDiv.querySelectorAll('.product-card');
                   let productCard = productCards[productIndex];
 
-                  await this.sleep(500);
+                  await this.sleep(250);
                   productCard.scrollIntoView();
                   let outOfStockElement = productCard.querySelector('.out-of-stock.product-card__out-of-stock');
                   if (outOfStockElement && outOfStockElement.textContent.trim() === "Esgotado") {                             
                       continue;
                   }
                   productCard.click();
-                  await this.sleep(1000);
+                  await this.sleep(500);
                   await this.openClosedComplementPanels();
                   // Agora, vamos adicionar um atraso antes de coletar os dados.
-                  await this.sleep(1000);
+                  await this.sleep(500);
 
                   
             let productModal = document.querySelector('.v-dialog.v-dialog--active.v-dialog--scrollable');
@@ -338,13 +338,13 @@ class ScrapyOlaClick {
 
   async backPage() {
         console.log("Voltou!")
-        await this.sleep(1000);
+        await this.sleep(500);
         let productModal = document.querySelector('.v-dialog.v-dialog--active.v-dialog--scrollable');
         let back = productModal.querySelector('button.v-btn.v-btn--fab.v-btn--has-bg.v-btn--round.theme--dark.v-size--default')
         if (back) {
           back.click()
       }
-        await this.sleep(1000);
+        await this.sleep(500);
   }
 
   async openClosedComplementPanels() {

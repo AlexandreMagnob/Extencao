@@ -41,11 +41,35 @@ class ScrapyWhatsApp {
 
               
               let titleElement = productCard.querySelector('.x1iyjqo2.x6ikm8r.x10wlt62.x1n2onr6.xlyipyv.xuxw1ft._ao3e');
-              let priceElement = productCard.querySelectorAll('.x1c4vz4f.xs83m0k.xdl72j9.x1g77sc7.x78zum5.xozqiw3.x1oa3qoh.x12fk4p8.xeuugli.x2lwn1j.x1nhvcw1.x1q0g3np.x1cy8zhl')[1]
               let descricaoElement = productCard.querySelectorAll('.x1c4vz4f.xs83m0k.xdl72j9.x1g77sc7.x78zum5.xozqiw3.x1oa3qoh.x12fk4p8.xeuugli.x2lwn1j.x1nhvcw1.x1q0g3np.x1cy8zhl')[0]
               let productTitle = titleElement ? titleElement.textContent : "";
-              let priceText = priceElement ? priceElement.textContent : "";
-              let productPrice = priceText.replace(/[^\d,]/g, '').replace('.', ',');
+              let priceElement = productCard.querySelectorAll('.x1c4vz4f.xs83m0k.xdl72j9.x1g77sc7.x78zum5.xozqiw3.x1oa3qoh.x12fk4p8.xeuugli.x2lwn1j.x1nhvcw1.x1q0g3np.x1cy8zhl')[1];
+
+              // Seleciona o elemento que contém o preço normal (dentro de <del>, caso exista)
+              let promoPriceElement = priceElement.querySelector("del._ao3e");
+
+              // Inicializa as variáveis
+              let productPromoPrice = ""; // Preço promocional
+              let productPrice = 0;      // Preço normal
+
+              if (promoPriceElement) {
+                  // Caso tenha promoção, extrai os dois preços
+                  let pricesText = priceElement.textContent.trim();
+                  let prices = pricesText.match(/(?:BRL\s?)(\d{1,3}(?:[.,]\d{3})*(?:[.,]\d{2}))/g);
+
+                  if (prices && prices.length >= 2) {
+                      // Primeiro preço é o promocional
+                      productPromoPrice = prices[0].replace(/[^\d,]/g, '').replace(',', '.');
+
+                      // Segundo preço é o normal
+                      productPrice = prices[1].replace(/[^\d,]/g, '').replace(',', '.');
+                  }
+              } else {
+                  // Caso não tenha promoção, pega apenas o preço normal
+                  let priceText = priceElement ? priceElement.textContent : "";
+                  productPrice = priceText.replace(/[^\d,]/g, '').replace(',', '.');
+              }
+            
               let imgSrc = "";
               let productDescricao = descricaoElement ? descricaoElement.textContent : "";
               let optionsComplement = []
@@ -82,12 +106,14 @@ class ScrapyWhatsApp {
             productData.push({
               title: productTitle,
               price: productPrice,
+              promoPrice : productPromoPrice,
               imgSrc: imgSrc,
               descricao: productDescricao,
             });
             console.log("- - - - - - - - - - - - - - - - - ")
             console.log("NOME PRODUTO: ", productTitle)
             console.log("PREÇO PRODUTO: ", productPrice)
+            console.log("PREÇO PROMOCIONAL : ", productPromoPrice)
             console.log("IMAGEM: ", imgSrc)
             console.log("DESCRIÇAO: ", productDescricao)
             console.log("- - - - - - - - - - - - - - - - - ")
