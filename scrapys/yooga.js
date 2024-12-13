@@ -134,9 +134,10 @@ class scrapyYooga {
             for await (const complementExpandable of complementExpandables) {
               let complementElements = complementExpandable.querySelectorAll('.choice-header.md.hydrated');
               let optionsComplement = [];
-    
+              
               // Pegar o nome de cada complemento
               for await (const complementElement of complementElements) {
+                complementElement.scrollIntoView();
                 let typeComplementElement = complementElement.querySelector('.mt-2.f-12.text-medium-gray');
                 let requiredElement = complementElement.querySelector('.ion-text-right.choice-required');
                 let complementNameElement = complementElement.querySelector('.d-inline-block');

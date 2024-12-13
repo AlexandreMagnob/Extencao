@@ -119,7 +119,7 @@ class scrapyHubt {
 
                   if(!productModal.querySelector('.price-Único')){
                   let optionTitleElement = optionElement.querySelector('span.price-description');
-                  let optionPriceElement = optionElement.querySelector('.price-value');
+                  let optionPriceElement = optionElement.querySelector('.ProductItemDialog__ProductPriceStyled-j5dr03-7.jHqzxF');
                   
     
                   optionTitle = optionTitleElement ? optionTitleElement.textContent : "";

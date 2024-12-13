@@ -9,65 +9,59 @@ class scrapyNeemo {
   
     async checkRepetition(complementExpandable){
         let repetition
-        let chooserDiv = complementExpandable.querySelector('.sc-caXVBt.pzWYu')
+        let chooserDiv = complementExpandable.querySelector('.icon-add.MuiBox-root.css-1at7nq9')
         if(chooserDiv){
-          repetition = " com repeticao"
+          repetition = "com repeticao"
         }
         else{
-          repetition = " sem repeticao"
+          repetition = "sem repeticao"
         }
         return repetition
     }
 
 
-    async processTypeComplement(complementExpandable) {
-      
-        var typeOption = complementExpandable.querySelector('.sc-fLlhyt.cNWLEt.sc-ecbf8c8a-0');
-        var typeText = typeOption ? typeOption.textContent.trim() : "";
-        var minQtd, maxQtd
-        var required = complementExpandable.querySelector('.sc-fLlhyt.cNWLEt.sc-ecbf8c8a-0.sc-2815c808-5');
-      
-        var regex = /(\d+)\s+de\s+(\d+)/;
-        var match = typeText.match(regex);
-        var type
-        var repetition = await this.checkRepetition(complementExpandable)
+    async processTypeComplement(typeComplement, complementExpandable, required) {
+      const complement = typeComplement.trim();
+      let repetition = await this.checkRepetition(complementExpandable);
+      let type = "Apenas uma opcao";
+      let minQtd = 0;
+      let maxQtd = 1;
 
-        // Atribua os valores a minQtd e maxQtd, ou 0 se não houver correspondência
-        minQtd = match ? parseInt(match[1], 10) : 0;
-        maxQtd = match ? parseInt(match[2], 10) : 0;
-      
-        // Verifique se 'required' existe e tem o texto "Obrigatório"
-        if (required && required.textContent.trim() === "Obrigatório") {
-          minQtd = 1;
-        }
-      
-        console.log({ minQtd, maxQtd });
-
-        if(maxQtd>1){
-            type = "Mais de uma opcao" + repetition
-        }
-        else{
-            type = "Apenas uma opcao"
-        }
-
-        return [type, minQtd, maxQtd]
+      if(required === "Obrigatório"){
+        minQtd = 1
       }
-  
-      async extractPrice(priceText) {
-        if (priceText.toLowerCase().includes('a partir de')) {
-          return 0; // Retorna 0 se a expressão for encontrada
-        } else {
-          const matches = priceText.match(/[\d,]+/);
+    
+       if (complement.match(/^Escolha até (\d+) opções/)) {
+        const maxItems = parseInt(complement.match(/^Escolha até (\d+) opções/)[1], 10);
+        type = 'Mais de uma opcao ' + repetition;
+        maxQtd = maxItems;
+        console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
       
-          if (matches && matches.length > 0) {
-            // Verifica se há correspondências antes de acessar a posição 0
-            const price = parseFloat(matches[0].replace('.', ','));
-            return price;
-          } else {
-            return 0; // Retorna 0 se nenhuma correspondência for encontrada
+      }else if (complement =="Escolha 1 opção") {
+        type = 'Apenas uma opcao';
+        maxQtd = 1;
+        console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
+      }else if (complement.match(/^Escolha (\d+) opções/)) {
+        const maxItems = parseInt(complement.match(/^Escolha (\d+) opções/)[1], 10);
+        type = 'Mais de uma opcao ' + repetition;
+        maxQtd = maxItems;
+          if(required === "Obrigatório"){
+            minQtd = maxItems
           }
-        }
+        console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
+      }else if (complement.match(/^Escolha entre \d+ e \d+ opções$/)) {
+        const minMaxItems = complement.match(/\d+/g);
+        const minItems = parseInt(minMaxItems[0], 10);
+        const maxItems = parseInt(minMaxItems[1], 10);
+        type = 'Mais de uma opcao ' + repetition;
+        minQtd = minItems;
+        maxQtd = maxItems;
+        console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
       }
+      return [type, minQtd, maxQtd];
+    }
+  
+     
       
   
     async clickProductCards() {
@@ -76,44 +70,25 @@ class scrapyNeemo {
   
       console.log("executando..")
       await this.sleep(500)
-      let categoryNamesElements = document.querySelectorAll('li.category_new_version')
+      let categoryDivs = document.querySelectorAll('.MuiBox-root.css-c6ss3g')
     
-      for await (const categoryIndex of [...Array(categoryNamesElements.length).keys()]) {
+      for await (const categoryIndex of [...Array(categoryDivs.length).keys()]) {
         await this.sleep(500)
-        let categoryNamesElements = document.querySelectorAll('li.category_new_version')
-        let categoryNameElement = categoryNamesElements[categoryIndex];
-
-        let categoryNameText = categoryNameElement ? categoryNameElement.textContent : "";
-        const match = categoryNameText.match(/\n(.*?)\n/);
-        // Check if there is a match and extract the result
-        const categoryName = match ? match[1].trim() : "";
-        // Conditional check for "descontos"
-        let categoryDiv;
-        if (/descontos/i.test(categoryName)) {
-            categoryDiv = document.getElementById('items_category_c_promotion');
-        } else {
-            // Obtain the id attribute
-            let categoryId = categoryNameElement ? "items_" + categoryNameElement.id : "";
-            // Use the id to select divs with matching class
-            categoryDiv = document.getElementById(categoryId);
-        }
-    
-  
-        let productCards = categoryDiv.querySelectorAll('.lista_item_comum_new_version');
+        let categoryDivs = document.querySelectorAll('.MuiBox-root.css-c6ss3g')
+        let categoryDiv = categoryDivs[categoryIndex];
+        let categoryNameElement = categoryDiv.querySelector('.MuiBox-root.css-q9sswo');
+        let categoryName = categoryNameElement ? categoryNameElement.textContent : "";
+        
+        let productCards = categoryDiv.querySelectorAll('.MuiBox-root.css-8n1saz, .MuiBox-root.css-1fi2p6v');
         console.log(categoryName);
         console.log(productCards);
         
         let productData = [];
         for await (const productIndex of [...Array(productCards.length).keys()]) {
           await this.sleep(500);
-          let categoryNamesElements = document.querySelectorAll('li.category_new_version')
-          let categoryNameElement = categoryNamesElements[categoryIndex];
-          
-          let categoryId = categoryNameElement ? "items_" + categoryNameElement.id : "";
-          let categoryDiv = document.getElementById(`.${categoryId}`);
-          
-          let productCards = categoryDiv.querySelectorAll('.lista_item_comum_new_version');
-
+          let categoryDivs = document.querySelectorAll('.MuiBox-root.css-c6ss3g')
+          let categoryDiv = categoryDivs[categoryIndex];
+          let productCards = categoryDiv.querySelectorAll('.MuiBox-root.css-8n1saz, .MuiBox-root.css-1fi2p6v');
           let productCard = productCards[productIndex];
           
           console.log({productIndex, productCard})
@@ -125,52 +100,76 @@ class scrapyNeemo {
               
               // Agora, vamos adicionar um atraso antes de coletar os dados.
               await this.sleep(1000)
-              let productModal = document.querySelector('.sc-himrzO');
-              let titleElement = productModal.querySelector('.sc-gKXOVf.itJyZm');
-              let priceElement = productCard.querySelector('.sc-fLlhyt.bNJFxQ, .sc-fLlhyt.fERYBh')
-            console.log(titleElement)
-            let imgElement = productModal.querySelector('.sc-29a74f8b-8');
-            let descricaoElement = productModal.querySelector('.sc-fLlhyt.isejHB')
+              let productModal = document.querySelector('.MuiBox-root.css-1bng0u7, .MuiBox-root.css-1kx78zm');
+              let titleElement = productModal.querySelector('.css-1jwx12t');
+              let priceElement = productModal.querySelector('.css-14wep3p')
+              console.log(titleElement)
+              
+              let img = productModal.querySelector('img')
+              let imgElement = ""
+              let imgSrc = "";
+
+            if(img){
+              imgElement = productModal.querySelector('img');
+              imgSrc = imgElement ? imgElement.src : ""
+            }else{
+              imgElement = productModal.querySelector('.MuiBox-root');
+              imgSrc = imgElement.getAttribute('url') || "";
+
+            }
+
+
+
+            let descricaoElement = productModal.querySelector('.css-1ewlikw, .css-13c8hy8')
             let productTitle = titleElement ? titleElement.textContent : "";
             console.log(productTitle)
             let priceText = priceElement ? priceElement.textContent : "";
-            let productPrice = await this.extractPrice(priceText);  
-            let imgSrc = imgElement ? imgElement.src : "";
+            let productPrice = 0 
+            if (priceText.includes("A partir de")) {
+              productPrice = 0;
+          } else {
+              // Caso contrário, extrai o valor numérico e ajusta a vírgula
+              productPrice = priceText.replace(/[^\d,.]/g, '').replace('.', ',');
+            }
+
             let productDescricao = descricaoElement ? descricaoElement.textContent : "";
     
             let complementsDict = []
-            let complementExpandables = productModal.querySelectorAll('.sc-bczRLJ.sc-f719e9b0-0.sc-2815c808-0')
+            let complementExpandables = productModal.querySelectorAll('.MuiBox-root.css-qsaw8')
             for await (const complementExpandable of complementExpandables) {
-              let complementElements = complementExpandable.querySelectorAll('.sc-bczRLJ.sc-f719e9b0-0.sc-2815c808-1')
+              let complementElements = complementExpandable.querySelectorAll('.MuiBox-root.css-7tvi6m')
               let optionsComplement = [];
               // Pegar o nome de cada complemento
               for await (const complementElement of complementElements) {
-                let complementNameElement = complementElement.querySelector('h3.sc-gKXOVf.hyVdID')
-                let complementName = complementNameElement ? complementNameElement.textContent : "";
-                
-                let [typeComplement, minQtd, maxQtd] = await this.processTypeComplement(complementExpandable);
-                console.log([typeComplement, minQtd, maxQtd])
+              let typeComplementElement = complementElement.querySelector('.MuiTypography-root.MuiTypography-body1.css-7nc1ma');
+              let complementNameElement = complementElement.querySelector('.css-14wep3p');
+              let requiredElement = complementElement.querySelector('.MuiBox-root.css-1h5deg2');
+              let typeComplementText = typeComplementElement ? typeComplementElement.textContent : "";
+              let required = requiredElement ? requiredElement.textContent : "";
+
+              let [typeComplement, minQtd, maxQtd] = await this.processTypeComplement(typeComplementText, complementExpandable, required)
+              let complementName = complementNameElement ? complementNameElement.textContent : "";
                 
                 // Pegar nome de cada opção do complemento da iteração
-                let optionsElement = complementExpandable.querySelectorAll('.sc-bczRLJ.sc-f719e9b0-0.sc-d41a80ea-0.leULZP')
+                let optionsElement = complementExpandable.querySelectorAll('.MuiBox-root.css-1dz7oz6, .MuiBox-root.css-ax65wm, .MuiBox-root.css-1yuo84k ')
                 for await (const optionElement of optionsElement) {
-                  let optionTitleElement = optionElement.querySelector('.sc-jfmDQi.sc-d41a80ea-2.kzllVI.igyqSS')
-                  let optionPriceElement = optionElement.querySelector('.sc-fLlhyt.cNWLEt.sc-ecbf8c8a-0.sc-d41a80ea-3.sc-d41a80ea-4')
-                  let optionDescriptionElement = optionElement.querySelector('.sc-fLlhyt.cNWLEt.sc-ecbf8c8a-0.sc-d41a80ea-3')
-                  let optionImgElement = optionElement.querySelector('.sc-d41a80ea-6');
+                  let optionTitleElement = optionElement.querySelector('.MuiTypography-root.MuiTypography-body1.css-13so3bl, .MuiBox-root.css-1yuo84k')  
+                  let optionPriceElement = optionElement.querySelector('.css-1ku18k1')
+                  let optionDescriptionElement = optionElement.querySelector('.MuiTypography-root.MuiTypography-body1.dark.css-16542y8')
+                  // let optionImgElement = optionElement.querySelector('.sc-d41a80ea-6');
 
                   let optionTitle = optionTitleElement ? optionTitleElement.textContent : "";
                   let optionPriceText = optionPriceElement ? optionPriceElement.textContent : "0";
                   let optionPrice = optionPriceText.replace(/[^\d,.]/g, '').replace('.', ',')
                   let optionDescription = optionDescriptionElement ? optionDescriptionElement.textContent : "";
-                  let optionImgNotUrl = optionImgElement ? window.getComputedStyle(optionImgElement).getPropertyValue('background-image') : "";
-                  let optionImg = optionImgNotUrl ? optionImgNotUrl.replace('url("', '').replace('")', '') : "";
+                  // let optionImgNotUrl = optionImgElement ? window.getComputedStyle(optionImgElement).getPropertyValue('background-image') : "";
+                  // let optionImg = optionImgNotUrl ? optionImgNotUrl.replace('url("', '').replace('")', '') : "";
 
                   optionsComplement.push({
                     optionTitle: optionTitle,
                     optionPrice: optionPrice,
                     optionDescription: optionDescription,
-                    optionImg: optionImg
+                    // optionImg: optionImg
                   });
                 }
     
@@ -179,6 +178,7 @@ class scrapyNeemo {
                   typeComplement: typeComplement,
                   minQtd: minQtd,
                   maxQtd: maxQtd,
+                  required: required,
                   options: optionsComplement
                 })
                 console.log("- - - - - - - - - - - - - - - - - ")
@@ -222,8 +222,8 @@ class scrapyNeemo {
   async backPage() {
     console.log("Voltou!")
     await this.sleep(1000);
-    let productModal = document.querySelector('.sc-himrzO');
-    let back = productModal.querySelector('button[aria-label="Fechar"]');
+    let productModal = document.querySelector('.MuiBox-root.css-1bng0u7, .MuiBox-root.css-1kx78zm');
+    let back = productModal.querySelector('.MuiBox-root.css-1cs9e5v, .icon-close.MuiBox-root.css-1qwnwpn');
     if (back) {
       back.click()
   }
