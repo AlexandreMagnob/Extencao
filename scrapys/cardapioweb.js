@@ -37,6 +37,12 @@ class scrapyCardapioWeb {
       maxQtd = 1;
       minQtd = 1;
       console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
+    }else if (complement.match(/^Escolha (\d+) opções/)) {
+      const maxItems = parseInt(complement.match(/^Escolha (\d+) opções/)[1], 10);
+      type = 'Mais de uma opcao ' + repetition;
+      maxQtd = maxItems;
+      console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
+    
     }else if (complement == "Escolha até 1 opção") {
       type = 'Apenas uma opcao ';
       maxQtd = 1;
@@ -66,16 +72,15 @@ class scrapyCardapioWeb {
         let categoryName = categoryNameElement ? categoryNameElement.textContent : "";
         console.log(categoryName);
         let productCards = categoryDiv.querySelectorAll('[data-key="h-product-card"]');
-      console.log(productCards)
         let productData = [];
         let complementsDict;
         for await (const productIndex of [...Array(productCards.length).keys()]) {
             let categoryDivs = document.querySelectorAll('.px-2.mt-8');
             let categoryDiv = categoryDivs[categoryIndex];
             let productCards = categoryDiv.querySelectorAll('[data-key="h-product-card"]');
-            let productExhausteds = categoryDiv.querySelectorAll('.absolute.top-0.right-0.overflow-hidden')
             let productCard = productCards[productIndex];
-            let productExhausted = productExhausteds[productIndex];
+            let productExhausted = productCard.querySelector('.absolute.top-0.right-0.overflow-hidden.w-28.h-28')
+            console.log(productExhausted)
             await this.sleep(500);
            if(productExhausted){
             continue;

@@ -21,7 +21,8 @@ async function createCSV(data, name) {
 
   scrapedData.forEach(categoryData => {
       const categoryName = categoryData.categoryName;
-      csvData.push(['Categoria', categoryName]);
+      const categoryDesc = categoryData.categoryDesc;
+      csvData.push(['Categoria', categoryName, categoryDesc]);
 
       categoryData.productsCategory.forEach(productData => {
           const productName = productData.title;

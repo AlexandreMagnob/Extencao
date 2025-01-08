@@ -17,6 +17,8 @@ class HandlerScrapy {
       this.scrapySaipos = new scrapySaipos();
       this.scrapyNeemo = new scrapyNeemo();
       this.scrapyCardapioWeb = new scrapyCardapioWeb();
+      this.scrapyMultiPedidos = new scrapyMultiPedidos();
+      this.scrapyWolf = new scrapyWolf();
       this.scrapyDiggy = new scrapyDiggy();
     }
   
@@ -151,6 +153,22 @@ class HandlerScrapy {
         const scrapedData = this.scrapyCardapioWeb.scrapedData
         await alert("Finalizado")
         const titleRestaurant = this.scrapyCardapioWeb.titleRestaurant
+        await createCSV(scrapedData, titleRestaurant)
+      }
+      else if (restaurante === 'MultiPedidos') {
+        await alert("Iniciando...");
+        await this.scrapyMultiPedidos.clickProductCards()
+        const scrapedData = this.scrapyMultiPedidos.scrapedData
+        await alert("Finalizado")
+        const titleRestaurant = this.scrapyMultiPedidos.titleRestaurant
+        await createCSV(scrapedData, titleRestaurant)
+      }
+      else if (restaurante === 'Menu Integrado') {
+        await alert("Iniciando...");
+        await this.scrapyWolf.clickProductCards()
+        const scrapedData = this.scrapyWolf.scrapedData
+        await alert("Finalizado")
+        const titleRestaurant = this.scrapyWolf.titleRestaurant
         await createCSV(scrapedData, titleRestaurant)
       }
       else if (restaurante === 'InstaDelivery') {

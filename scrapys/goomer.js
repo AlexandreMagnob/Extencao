@@ -94,11 +94,10 @@ class ScrapyGoomer {
           let productCard = productCards[productIndex];
           
           productCard.scrollIntoView()
-          await this.sleep(1000)
+          await this.sleep(500)
           productCard.click()
-
+          await this.sleep(3000)
             // Agora, vamos adicionar um atraso antes de coletar os dados.
-            await this.sleep(2000)
             let productModal = document.querySelector('.sc-1w3vq2h-1.edhcrD');
             let titleElement = productModal.querySelector('.sc-1w3vq2h-4.kLwjTc');
             let imgElement = productModal.querySelector('img');

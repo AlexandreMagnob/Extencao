@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
       { urlPattern: /^https:\/\/app\.jotaja\.com\/.*/, value: "Jotaja" },
       { urlPattern: /^https:\/\/.*\.cardapioweb\.com\/.*/, value: "CardapioWeb" },
       { urlPattern: /^https:\/\/.*\.yooga\.app\/.*/, value: "Yooga" },
+      { urlPattern: /^https:\/\/.*\.menuintegrado\.com\.br\/.*/, value: "Menu Integrado" },
       { urlPattern: /^https:\/\/.*\.cardapiodigital\.io\/.*/, value: "CardapioDigital" },
       { urlPattern: /^https:\/\/.*\.saipos\.com\/.*/, value: "Saipos" }
     ];

@@ -89,6 +89,14 @@ class ScrapyAnotai {
       minQtd = minItems;
       maxQtd = maxItems;
       console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
+    }else if (complement.match(/^Escolha entre \d+ a \d+ itens$/)) {
+      const minMaxItems = complement.match(/\d+/g);
+      const minItems = parseInt(minMaxItems[0], 10);
+      const maxItems = parseInt(minMaxItems[1], 10);
+      type = 'Mais de uma opcao ' + repetition;
+      minQtd = minItems;
+      maxQtd = maxItems;
+      console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
     }else if ("Escolha 1 item") {
       type = 'Apenas uma opcao ';
       maxQtd = 1;
