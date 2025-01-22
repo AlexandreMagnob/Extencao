@@ -155,26 +155,32 @@ class scrapyDino {
             }
 
               // Pegar nome de cada opção do complemento da iteração
-              let optionsElement = complementExpandable.querySelectorAll('.checkbox,.radio,.pb.pt');
+              let optionsElement = complementExpandable.querySelectorAll('.checkbox,.radio,.pb.pt, .options');
               for await (const optionElement of optionsElement) {
-                let optionTitle = "";
                 let optionPrice = "0";
                 let optionDescription = "";
 
-                if (optionElement.classList.contains('radio')) {
+                if (optionElement.classList.contains('options, radio')) {
+                  if (optionElement.classList.contains('options')) {
                   // Se a classe for 'radio', trata como um rádio.
-                  let optionTitleElement = optionElement.querySelector('label');
-                  let optionPriceElement = optionElement.querySelector('.pull-right');
+                  let optionTitleElement = optionElement.querySelector('.radio.c-radio');
+                  let optionPriceElement = optionElement.querySelector('.price');
                   
                   optionTitle = optionTitleElement.textContent.trim();
                   let optionPriceText = optionPriceElement ? optionPriceElement.textContent : "0";
                   optionPrice = optionPriceText.replace(/[^\d,.]/g, '').replace('.', ',')
-
+                  }
+                  if (optionElement.classList.contains('radio')) {
+                  let optionTitleElement = optionElement.querySelector('label.data-name');
+                  let optionPriceElement = optionElement.querySelector('b');
                   
+                  optionTitle = optionTitleElement.textContent.trim();
+                  let optionPriceText = optionPriceElement ? optionPriceElement.textContent : "0";
+                  optionPrice = optionPriceText.replace(/[^\d,.]/g, '').replace('.', ',')
+                  }
                   
                 } else if (optionElement && optionElement.classList.contains('pb') && optionElement.classList.contains('pt')) {
                   let optionText = optionElement.textContent;
-              
                   // Expressão regular para encontrar o preço no formato R$ xx,xx
                   const priceRegex = /R\$\s*(\d+,\d{2})/;
                   const priceMatch = optionText.match(priceRegex);
@@ -208,8 +214,6 @@ class scrapyDino {
                         optionTitle = optionParts[0].trim();
                         let optionPriceText = optionParts[1];
                         optionPrice = optionPriceText.replace(/[^\d,.]/g, '').replace('.', ',');
-                
-                        console.log({ optionPrice, optionTitle });
                     } else {
                         optionTitle = optionLabelContent;
                         optionPrice = "0"; // ou atribua um valor padrão ou faça outro tratamento adequado

@@ -101,8 +101,8 @@ class scrapyNeemo {
               // Agora, vamos adicionar um atraso antes de coletar os dados.
               await this.sleep(1000)
               let productModal = document.querySelector('.MuiBox-root.css-1bng0u7, .MuiBox-root.css-1kx78zm');
-              let titleElement = productModal.querySelector('.css-1jwx12t');
-              let priceElement = productModal.querySelector('.css-14wep3p')
+              let titleElement = productModal.querySelector('.css-12cnkjo');
+              let priceElement = productModal.querySelector('.css-11as6gh')
               console.log(titleElement)
               
               let img = productModal.querySelector('img')
@@ -120,7 +120,7 @@ class scrapyNeemo {
 
 
 
-            let descricaoElement = productModal.querySelector('.css-1ewlikw, .css-13c8hy8')
+            let descricaoElement = productModal.querySelector('.css-nkwegi')
             let productTitle = titleElement ? titleElement.textContent : "";
             console.log(productTitle)
             let priceText = priceElement ? priceElement.textContent : "";
@@ -141,9 +141,9 @@ class scrapyNeemo {
               let optionsComplement = [];
               // Pegar o nome de cada complemento
               for await (const complementElement of complementElements) {
-              let typeComplementElement = complementElement.querySelector('.MuiTypography-root.MuiTypography-body1.css-7nc1ma');
-              let complementNameElement = complementElement.querySelector('.css-14wep3p');
-              let requiredElement = complementElement.querySelector('.MuiBox-root.css-1h5deg2');
+              let typeComplementElement = complementElement.querySelector('.MuiTypography-root.MuiTypography-body1.css-1ykqilq');
+              let complementNameElement = complementElement.querySelector('.css-11as6gh');
+              let requiredElement = complementElement.querySelector('.MuiBox-root.css-1xe94o5');
               let typeComplementText = typeComplementElement ? typeComplementElement.textContent : "";
               let required = requiredElement ? requiredElement.textContent : "";
 
@@ -153,8 +153,8 @@ class scrapyNeemo {
                 // Pegar nome de cada opção do complemento da iteração
                 let optionsElement = complementExpandable.querySelectorAll('.MuiBox-root.css-1dz7oz6, .MuiBox-root.css-ax65wm, .MuiBox-root.css-1yuo84k ')
                 for await (const optionElement of optionsElement) {
-                  let optionTitleElement = optionElement.querySelector('.MuiTypography-root.MuiTypography-body1.css-13so3bl, .MuiBox-root.css-1yuo84k')  
-                  let optionPriceElement = optionElement.querySelector('.css-1ku18k1')
+                  let optionTitleElement = optionElement.querySelector('.MuiTypography-root.MuiTypography-body1.dark.css-dps74z, .MuiBox-root.css-1yuo84k')  
+                  let optionPriceElement = optionElement.querySelector('.css-o6b2tx')
                   let optionDescriptionElement = optionElement.querySelector('.MuiTypography-root.MuiTypography-body1.dark.css-16542y8')
                   // let optionImgElement = optionElement.querySelector('.sc-d41a80ea-6');
 

@@ -10,7 +10,7 @@ class scrapyMultiPedidos {
     
   
     async checkRepetition(complementExpandable) { 
-      let button = complementExpandable.querySelector(".MuiSvgIcon-root");
+      let button = complementExpandable.querySelector(".quantity-button.md.hydrated");
       if (button) {
         return "com repeticao";
       } else {
@@ -26,23 +26,12 @@ class scrapyMultiPedidos {
       let minQtd = 0;
       let maxQtd = 0;
     
-       if (complement.match(/^Escolha até (\d+) opções/)) {
-        const maxItems = parseInt(complement.match(/^Escolha até (\d+) opções/)[1], 10);
-        type = 'Mais de uma opcao ' + repetition;
-        maxQtd = maxItems;
-        console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
-      
-      }else if (complement =="Escolha 1 opção") {
+       if (complement =="Obrigatório") {
         type = 'Apenas uma opcao';
         maxQtd = 1;
         minQtd = 1;
         console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
-      }else if (complement == "Escolha até 1 opção") {
-        type = 'Apenas uma opcao ';
-        maxQtd = 1;
-        minQtd = 0;
-        console.log('minQtd:', minQtd, 'maxQtd:', maxQtd);
-      }else if (complement.match(/^Escolha de \d+ a \d+ opções$/)) {
+      }else if (complement.match(/^Min: \d+ | Max: \d+/)) {
         const minMaxItems = complement.match(/\d+/g);
         const minItems = parseInt(minMaxItems[0], 10);
         const maxItems = parseInt(minMaxItems[1], 10);
@@ -57,73 +46,61 @@ class scrapyMultiPedidos {
     async clickProductCards() {
       console.log("executando..");
       await this.sleep(1000);
-      let categoryDivs = document.querySelectorAll('.ion-item-group');
-  
+      let categoryDivs = document.querySelectorAll('.md.item-group-md.item.hydrated');
+      console.log(categoryDivs)
       for await (const categoryIndex of [...Array(categoryDivs.length).keys()]) {
-          let categoryDivs = document.querySelectorAll('.ion-item-group');
+          let categoryDivs = document.querySelectorAll('.md.item-group-md.item.hydrated');
           let categoryDiv = categoryDivs[categoryIndex];
           let categoryNameElement = categoryDiv.querySelector('.category-name');
           let categoryName = categoryNameElement ? categoryNameElement.textContent : "";
           console.log(categoryName);
-          let productCards = categoryDiv.querySelectorAll('[data-key="h-product-card"]');
+          let productCards = categoryDiv.querySelectorAll('.product-card.hover-anim.md.hydrated');
         console.log(productCards)
           let productData = [];
           let complementsDict;
           for await (const productIndex of [...Array(productCards.length).keys()]) {
-              let categoryDivs = document.querySelectorAll('.ion-item-group');
+              let categoryDivs = document.querySelectorAll('.md.item-group-md.item.hydrated');
               let categoryDiv = categoryDivs[categoryIndex];
-              let productCards = categoryDiv.querySelectorAll('[data-key="h-product-card"]');
-              let productExhausteds = categoryDiv.querySelectorAll('.absolute.top-0.right-0.overflow-hidden')
+              let productCards = categoryDiv.querySelectorAll('.product-card.hover-anim.md.hydrated');
               let productCard = productCards[productIndex];
-              let productExhausted = productExhausteds[productIndex];
+
+              productCard.scrollIntoView();
               await this.sleep(500);
-             if(productExhausted){
-              continue;
-             }
               productCard.click();
               await this.sleep(500);
   
-              let productContainer = document.querySelector('.relative.flex.flex-col.min-h-full.w-full');
-              let productContainer2 = document.querySelector('.flex.items-center.p-5');
-              let titleElement = productContainer.querySelector('.text-base.font-medium.leading-6.text-gray-700');
-              let priceElement = productContainer.querySelector('.mt-3.text-base.text-gray-700, .text-sm.text-gray-500.line-through');
-              let promoPriceElement = productContainer.querySelector('.text-base.text-green-500');
-              let imgElement = productContainer2 ? productContainer2.querySelector('img.bg-gray-100') : null;
-              let descricaoElement = productContainer.querySelector('.text-sm.font-light.text-gray-500 ');
+              let productContainer = document.querySelector('.ion-page.can-go-back');
+              let titleElement = productContainer.querySelector('.toolbar-title');
+              let priceElement = productContainer.querySelector('.toolbar-titletoolbar-titletoolbar-titletoolbar-title');
+              let promoPriceElement = ''
+              let imgElement = productCard ? productCard.querySelector('img') : null;
+              let descricaoElement = productCard.querySelector('p');
               let productTitle = titleElement ? titleElement.textContent : "";
               console.log(productTitle)
               let promoPriceText = promoPriceElement ? promoPriceElement.textContent : "";
               let priceText = priceElement ? priceElement.textContent : "";
-              let productPrice = 0; 
-                if (priceText.includes("A partir de")) {
-                    productPrice = 0;
-                } else {
-                    // Caso contrário, extrai o valor numérico e ajusta a vírgula
-                    productPrice = priceText.replace(/[^\d,.]/g, '').replace('.', ',');
-                  }
-              let productPromoPrice = promoPriceText.replace(/[^\d,.]/g, '').replace('.', ',');
+              let productPrice = priceText.replace(/[^\d,.]/g, '').replace('.', ',');
               let imgSrc = imgElement ? imgElement.src : "";
               let productDescricao = descricaoElement ? descricaoElement.textContent : "";
   
               complementsDict = [];
             await this.sleep(2000)
-            let complementExpandables = document.querySelectorAll('[class="p-0"]');
+            let complementExpandables = document.querySelectorAll('.md.list-md.hydrated');
             
             for await (const complementExpandable of complementExpandables) {
-              let complementElements = complementExpandable.querySelectorAll('.MuiListSubheader-root.p-4.text-gray-700.bg-gray-100 ');
+              let complementElements = complementExpandable.querySelectorAll('.ion-no-padding.ion-text-center.md.hydrated');
               
               
               let optionsComplement = [];
     
               // Pegar o nome de cada complemento
               for await (const complementElement of complementElements) {
-                let typeComplementElement = complementElement.querySelector('.text-xs.font-light');
-                let complementNameElement = complementElement.querySelector('.text-sm.font-medium');
-                let requiredElement = complementElement.querySelector('.p-1.font-normal.leading-3.text-white');
+                let typeComplementElement = complementElement.querySelector('.md hydrated');
+                let complementNameElement = complementElement.querySelector('.h3');
+                let requiredElement = ''
                 let typeComplementText = typeComplementElement ? typeComplementElement.textContent : "";
   
                 let [typeComplement, minQtd, maxQtd] = await this.processTypeComplement(typeComplementText, complementExpandable)
-                let required = requiredElement ? requiredElement.textContent : "";
                 let complementName = complementNameElement ? complementNameElement.textContent : "";
                 // Pegar nome de cada opção do complemento da iteração
                 
@@ -131,13 +108,13 @@ class scrapyMultiPedidos {
                 let optionsElement = complementExpandable.querySelectorAll('.flex.items-center.justify-between ');
                 
                 for await (const optionElement of optionsElement) {
-                  if (optionElement != complementExpandable.querySelector('div.flex.items-center.justify-between.space-x-2')){
+                  if (optionElement != complementExpandable.querySelector('.ion-activatable.item.md.item-lines-inset.in-list.ion-focusable.hydrated')){
                     
                   
-                    let optionTitleElement = optionElement.querySelector('.flex.items-center.text-sm ');
-                    let optionPriceElement = optionElement.querySelector('.mt-1.text-xs.font-medium ');
-                    let optionDescriptionElement = optionElement.querySelector('.text-xs.font-light.text-gray-700');
-                    let optionImgELement = optionElement.querySelector('img.bg-gray-100.object-contain.object-center.w-full.h-full.block');
+                    let optionTitleElement = optionElement.querySelector('.text-wrap');
+                    let optionPriceElement = optionElement.querySelector('.extra-price-label.sc-ion-label-md-h.sc-ion-label-md-s.md.hydrated');
+                    let optionDescriptionElement = optionElement.querySelector('.small');
+                    let optionImgELement = ''
                     //let optionQtdElement = optionElement.querySelector('span.text-grey-3');
       
                     let optionTitle = optionTitleElement ? optionTitleElement.textContent : "";
@@ -162,7 +139,6 @@ class scrapyMultiPedidos {
                   typeComplement: typeComplement,
                   minQtd: minQtd,
                   maxQtd: maxQtd,
-                  required: required,
                   options: optionsComplement
                 })
                 console.log("- - - - - - - - - - - - - - - - - ")
@@ -171,7 +147,6 @@ class scrapyMultiPedidos {
                 console.log("TIPO DO COMPLEMENT: ",typeComplement)
                 console.log("QUANTIDADE MIN: ",minQtd)
                 console.log("QUANTIDADE MAX: ",maxQtd)
-                console.log("REQUERED: ",required)
                 console.log("OPÇOES: ",optionsComplement)
                 console.log("- - - - - - - - - - - - - - - - - ")
                 console.log("                                  ")
@@ -181,7 +156,6 @@ class scrapyMultiPedidos {
             productData.push({
               title: productTitle,
               price: productPrice,
-              promoPrice : productPromoPrice,
               imgSrc: imgSrc,
               descricao: productDescricao,
               complementsDict: complementsDict
@@ -209,11 +183,13 @@ class scrapyMultiPedidos {
   
   async backPage() {
     await this.sleep(1000);
-    let back = document.querySelector('.MuiButtonBase-root.MuiIconButton-root.z-20.text-2xl.text-gray-500')
-    if (back) {
-      console.log("Voltou")
-      back.click()
-  }
+    window.history.back()
+  //   let divBtn = document.querySelector('.md.header-md.header-collapse-none.hydrated')
+  //   let back = divBtn.querySelector('.button-native')
+  //   if (back) {
+  //     console.log("Voltou")
+  //     back.click()
+  // }
   }
   }
   
