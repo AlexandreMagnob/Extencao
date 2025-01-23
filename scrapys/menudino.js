@@ -157,28 +157,53 @@ class scrapyDino {
               // Pegar nome de cada opção do complemento da iteração
               let optionsElement = complementExpandable.querySelectorAll('.checkbox,.radio,.pb.pt, .options');
               for await (const optionElement of optionsElement) {
+                let optionTitle = "";
                 let optionPrice = "0";
                 let optionDescription = "";
 
-                if (optionElement.classList.contains('options, radio')) {
-                  if (optionElement.classList.contains('options')) {
-                  // Se a classe for 'radio', trata como um rádio.
-                  let optionTitleElement = optionElement.querySelector('.radio.c-radio');
-                  let optionPriceElement = optionElement.querySelector('.price');
+                if (optionElement.classList.contains('options')) {
+                  // // Se a classe for 'radio', trata como um rádio.
+                  // let optionTitleElement = optionElement.querySelector('.radio.c-radio');
+                  // let optionPriceElement = optionElement.querySelector('.price, b');
+                  // console.log(optionTitleElement);
+                  // optionTitle = optionTitleElement.textContent.trim();
+                  // let optionPriceText = optionPriceElement ? optionPriceElement.textContent : "0";
+                  // optionPrice = optionPriceText.replace(/[^\d,.]/g, '').replace('.', ',')
                   
-                  optionTitle = optionTitleElement.textContent.trim();
-                  let optionPriceText = optionPriceElement ? optionPriceElement.textContent : "0";
-                  optionPrice = optionPriceText.replace(/[^\d,.]/g, '').replace('.', ',')
-                  }
+                  // // if (optionElement.classList.contains('radio')) {
+                  // // let optionTitleElement = optionElement.querySelector('label.data-name');
+                  // // let optionPriceElement = optionElement.querySelector('b');
+                  
+                  // // optionTitle = optionTitleElement.textContent.trim();
+                  // // let optionPriceText = optionPriceElement ? optionPriceElement.textContent : "0";
+                  // // optionPrice = optionPriceText.replace(/[^\d,.]/g, '').replace('.', ',')
+                  // // }
                   if (optionElement.classList.contains('radio')) {
-                  let optionTitleElement = optionElement.querySelector('label.data-name');
-                  let optionPriceElement = optionElement.querySelector('b');
-                  
-                  optionTitle = optionTitleElement.textContent.trim();
-                  let optionPriceText = optionPriceElement ? optionPriceElement.textContent : "0";
-                  optionPrice = optionPriceText.replace(/[^\d,.]/g, '').replace('.', ',')
+                    let labelElement = optionElement.querySelector('label[for]');
+                    if (labelElement) {
+                      // Captura o título removendo o texto do preço e formatando corretamente
+                      optionTitle = labelElement.childNodes[3]?.textContent.trim() || ""; // Extrai o texto do título (entre os filhos)
+                      
+                      // Captura o preço do elemento <b>
+                      let priceElement = labelElement.querySelector('b');
+                      if (priceElement) {
+                        optionPrice = priceElement.textContent.trim().replace(/[^\d,.]/g, '').replace('.', ',');
+                      }
+                    }
                   }
-                  
+                  // Caso seja do tipo "options"
+                  else if (optionElement.classList.contains('options')) {
+                    let radioElement = optionElement.querySelector('.radio.c-radio');
+                    let labelPriceElement = optionElement.querySelector('.label-price .price');
+                
+                    if (radioElement) {
+                      optionTitle = radioElement.textContent.trim();
+                    }
+                    if (labelPriceElement) {
+                      optionPrice = labelPriceElement.textContent.trim().replace(/[^\d,.]/g, '').replace('.', ',');
+                    }
+                  } 
+                
                 } else if (optionElement && optionElement.classList.contains('pb') && optionElement.classList.contains('pt')) {
                   let optionText = optionElement.textContent;
                   // Expressão regular para encontrar o preço no formato R$ xx,xx

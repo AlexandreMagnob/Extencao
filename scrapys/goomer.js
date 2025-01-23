@@ -101,10 +101,17 @@ class ScrapyGoomer {
             let productModal = document.querySelector('.sc-1w3vq2h-1.edhcrD');
             let titleElement = productModal.querySelector('.sc-1w3vq2h-4.kLwjTc');
             let imgElement = productModal.querySelector('img');
-            let descricaoElement = productModal.querySelector('.content-css');
+            let miniModal = productModal.querySelector('.sc-1w3vq2h-2.jTDBfz')
+            let showMore = miniModal.querySelector('.show-more-less-clickable')
+            await this.sleep(500)
+            if(showMore){
+              showMore.click()
+            }
+            await this.sleep(500)
+            let descricaoElement = productModal.querySelector('span[style="display: block; max-width: unset;"]');
             let productTitle = titleElement ? titleElement.textContent : "";
             console.log(productTitle)
-            let priceElement = productModal.querySelector('.sc-1w3vq2h-6.duscXf');
+            let priceElement = productModal.querySelector('.sc-1w3vq2h-6.inBdiR');
             let priceText = priceElement ? priceElement.textContent : "";
             let productPrice = 0
             if (priceText.includes("A partir de")) {
@@ -143,15 +150,7 @@ class ScrapyGoomer {
                   let optionPrice = optionPriceText.replace(/[^\d,.]/g, '').replace('.', ',')
                   let optionDescription = optionTitle.includes('-') ? optionTitle.split('-')[1].trim() : "";
 
-                  console.log("- - - - - - - - - - - - - - - - - ")
-                  console.log("NOME DO COMPLEMENTO: ",complementName)
-                  console.log("TEXTO DO TIPO DO COMPLEMENTO: ",typeComplementText.trim())
-                  console.log("TIPO DO COMPLEMENT: ",typeComplement)
-                  console.log("QUANTIDADE MIN: ",minQtd)
-                  console.log("QUANTIDADE MAX: ",maxQtd)
-                  console.log("OPÇOES: ",optionsComplement)
-                  console.log("- - - - - - - - - - - - - - - - - ")
-                  console.log("                                  ")
+                  
 
                   optionsComplement.push({
                     optionTitle: optionTitle,
@@ -167,7 +166,15 @@ class ScrapyGoomer {
                   maxQtd: maxQtd,
                   options: optionsComplement
                 })
-
+                console.log("- - - - - - - - - - - - - - - - - ")
+                console.log("NOME DO COMPLEMENTO: ",complementName)
+                console.log("TEXTO DO TIPO DO COMPLEMENTO: ",typeComplementText.trim())
+                console.log("TIPO DO COMPLEMENT: ",typeComplement)
+                console.log("QUANTIDADE MIN: ",minQtd)
+                console.log("QUANTIDADE MAX: ",maxQtd)
+                console.log("OPÇOES: ",optionsComplement)
+                console.log("- - - - - - - - - - - - - - - - - ")
+                console.log("                                  ")
               }
             }
     
@@ -178,7 +185,13 @@ class ScrapyGoomer {
               descricao: productDescricao,
               complementsDict: complementsDict
             });
-            // console.log("Produto adicionado")
+            console.log("- - - - - - - - - - - - - - - - - ")
+            console.log("NOME PRODUTO: ", productTitle)
+            console.log("PREÇO PRODUTO: ", productPrice)
+            console.log("IMAGEM: ", imgSrc)
+            console.log("DESCRIÇAO: ", productDescricao)
+            console.log("- - - - - - - - - - - - - - - - - ")
+            console.log("                                  ")
             await this.backPage();
           }
         this.scrapedData.push({
