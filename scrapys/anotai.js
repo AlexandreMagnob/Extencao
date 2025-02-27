@@ -64,7 +64,7 @@ class ScrapyAnotai {
     let type = "";
     let minQtd = 0;
     let maxQtd = 0;
-  
+       
     if (complement.match(/^Escolha (\d+) itens/)) {
       const itemCount = parseInt(complement.match(/^Escolha (\d+) itens/)[1], 10);
         type = 'Mais de uma opcao ' + repetition;

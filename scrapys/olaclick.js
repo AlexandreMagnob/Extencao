@@ -45,6 +45,10 @@ class ScrapyOlaClick {
                 type = "Apenas uma opcao ";
                 minQtd = 1;
                 maxQtd = 1;
+            } else if (complement === "Selecione até 1 opção") {
+                type = "Apenas uma opcao ";
+                minQtd = 0;
+                maxQtd = 1;
             } else if (matchSelectUntil) {
             const maxItems = parseInt(matchSelectUntil[1], 10);
             if (maxItems === 1) {
@@ -141,10 +145,10 @@ class ScrapyOlaClick {
       console.log("executando..")
       await this.sleep(1000);
       await this.scrollToEndAndBack();
-      let categoryDivs = document.querySelectorAll('[data-v-294cdcdc=""][data-v-040becfc=""] > [data-v-294cdcdc=""]');
+      let categoryDivs = document.querySelectorAll('[data-v-294cdcdc=""][data-v-3d300d22=""] > [data-v-294cdcdc=""]');
 
     for await (const categoryIndex of [...Array(categoryDivs.length).keys()]) {
-        let categoryDivs = document.querySelectorAll('[data-v-294cdcdc=""][data-v-040becfc=""] > [data-v-294cdcdc=""]');
+        let categoryDivs = document.querySelectorAll('[data-v-294cdcdc=""][data-v-3d300d22=""] > [data-v-294cdcdc=""]');
         let categoryDiv = categoryDivs[categoryIndex];
         let h2Element = categoryDiv.querySelector('h2.category.text-truncate-1-line');
 
@@ -166,7 +170,7 @@ class ScrapyOlaClick {
 
               for await (const productIndex of [...Array(productCards.length).keys()]) {
                   await this.sleep(500);
-                  let categoryDivs = document.querySelectorAll('[data-v-294cdcdc=""][data-v-040becfc=""] > [data-v-294cdcdc=""]');
+                  let categoryDivs = document.querySelectorAll('[data-v-294cdcdc=""][data-v-3d300d22=""] > [data-v-294cdcdc=""]');
                   let categoryDiv = categoryDivs[categoryIndex];
                   let productCards = categoryDiv.querySelectorAll('.product-card');
                   let productCard = productCards[productIndex];

@@ -15,6 +15,7 @@ async function createCSV(data, name) {
       'QTDE MINIMA',
       'QTDE MAXIMA',
       'CALCULO DOS COMPLEMENTOS',
+      'REAPROVEITAR',
   ]);
 
   const scrapedData = data;

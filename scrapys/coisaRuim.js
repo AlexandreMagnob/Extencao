@@ -148,6 +148,7 @@ class ScrapyCoisaRuim {
                 let optionsElement = complementExpandable.querySelectorAll('li, .items-list-item');
                 
                 for await (const optionElement of optionsElement) {
+                  
                   let optionTitleElement = optionElement.querySelector('.option-name, .name, .title');
                   
                   let optionPriceElement = optionElement.querySelector('.option-price, .formatted-price, .price-value');
@@ -155,7 +156,9 @@ class ScrapyCoisaRuim {
                   let optionImgELement = optionElement.querySelector('img');
                   //let optionQtdElement = optionElement.querySelector('span.text-grey-3');
     
-                  let optionTitle = optionTitleElement ? optionTitleElement.textContent : "";
+                  let optionTitle = optionTitleElement 
+                      ? optionTitleElement.childNodes[0].textContent.trim() // Pega apenas o primeiro nó de texto
+                      : "";
                   let optionDescription = optionDescriptionElement ? optionDescriptionElement.textContent : "";
                   let optionPriceText = optionPriceElement ? optionPriceElement.textContent : "0";
                   let optionPrice = optionPriceText.replace(/[^0-9,]/g, '').replace(/^(\d+),(\d{2})$/, '$1,$2');

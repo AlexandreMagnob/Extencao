@@ -99,26 +99,29 @@ class ScrapyGoomer {
           await this.sleep(3000)
             // Agora, vamos adicionar um atraso antes de coletar os dados.
             let productModal = document.querySelector('.sc-1w3vq2h-1.edhcrD');
-            let titleElement = productModal.querySelector('.sc-1w3vq2h-4.kLwjTc');
+            let titleElement = productModal.querySelector('.sc-1w3vq2h-5.XLODZ');
             let imgElement = productModal.querySelector('img');
-            let miniModal = productModal.querySelector('.sc-1w3vq2h-2.jTDBfz')
+            let miniModal = productModal.querySelector('.content-css')
+            if(miniModal){
             let showMore = miniModal.querySelector('.show-more-less-clickable')
             await this.sleep(500)
             if(showMore){
               showMore.click()
             }
+          }
             await this.sleep(500)
             let descricaoElement = productModal.querySelector('span[style="display: block; max-width: unset;"]');
             let productTitle = titleElement ? titleElement.textContent : "";
             console.log(productTitle)
             let priceElement = productModal.querySelector('.sc-1w3vq2h-6.inBdiR');
             let priceText = priceElement ? priceElement.textContent : "";
-            let productPrice = 0
-            if (priceText.includes("A partir de")) {
-              productPrice = 0;
-          } else {
-              productPrice = priceText.replace(/[^\d,.]/g, '').replace('.', ',')
-            }
+            let productPrice = priceText.replace(/[^\d,.]/g, '').replace('.', ',')
+          //   let productPrice = 0
+          //   if (priceText.includes("A partir de")) {
+          //     productPrice = 0;
+          // } else {
+          //     productPrice = priceText.replace(/[^\d,.]/g, '').replace('.', ',')
+          //   }
 
             let imgSrc = imgElement ? imgElement.src : "";
             let productDescricao = descricaoElement ? descricaoElement.textContent : "";

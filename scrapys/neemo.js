@@ -70,25 +70,25 @@ class scrapyNeemo {
   
       console.log("executando..")
       await this.sleep(500)
-      let categoryDivs = document.querySelectorAll('.MuiBox-root.css-c6ss3g')
+      let categoryDivs = document.querySelectorAll('.MuiBox-root.css-c6ss3g, .MuiBox-root.css-1cjigz6')
     
       for await (const categoryIndex of [...Array(categoryDivs.length).keys()]) {
         await this.sleep(500)
-        let categoryDivs = document.querySelectorAll('.MuiBox-root.css-c6ss3g')
+        let categoryDivs = document.querySelectorAll('.MuiBox-root.css-c6ss3g, .MuiBox-root.css-1cjigz6')
         let categoryDiv = categoryDivs[categoryIndex];
         let categoryNameElement = categoryDiv.querySelector('.MuiBox-root.css-q9sswo');
         let categoryName = categoryNameElement ? categoryNameElement.textContent : "";
         
-        let productCards = categoryDiv.querySelectorAll('.MuiBox-root.css-8n1saz, .MuiBox-root.css-1fi2p6v');
+        let productCards = categoryDiv.querySelectorAll('.MuiBox-root.css-8n1saz, .MuiBox-root.css-1fi2p6v, .MuiBox-root.css-4nes6h');
         console.log(categoryName);
         console.log(productCards);
         
         let productData = [];
         for await (const productIndex of [...Array(productCards.length).keys()]) {
           await this.sleep(500);
-          let categoryDivs = document.querySelectorAll('.MuiBox-root.css-c6ss3g')
+          let categoryDivs = document.querySelectorAll('.MuiBox-root.css-c6ss3g, .MuiBox-root.css-1cjigz6')
           let categoryDiv = categoryDivs[categoryIndex];
-          let productCards = categoryDiv.querySelectorAll('.MuiBox-root.css-8n1saz, .MuiBox-root.css-1fi2p6v');
+          let productCards = categoryDiv.querySelectorAll('.MuiBox-root.css-8n1saz, .MuiBox-root.css-1fi2p6v, .MuiBox-root.css-4nes6h');
           let productCard = productCards[productIndex];
           
           console.log({productIndex, productCard})

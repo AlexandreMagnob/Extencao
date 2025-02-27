@@ -213,7 +213,7 @@ class scrapyDino {
               
                   // Removendo o preço do texto para obter apenas o título
                   optionText = optionText.replace(priceRegex, "").trim();
-              
+               
                   // Removendo o texto "Máx. 3" do texto
                   const maxTextRegex = /Máx\. \d+/;
                   optionText = optionText.replace(maxTextRegex, "").trim();
